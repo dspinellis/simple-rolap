@@ -12,3 +12,4 @@ RESULTS=$(patsubst %.sql,%.txt,$(QUERIES))
 	mysql -u $(DBUSER) -p"$(DBPASSWD)" $(DB) >$@
 
 all: $(RESULTS)
+	-beep

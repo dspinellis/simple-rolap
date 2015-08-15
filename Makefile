@@ -4,11 +4,11 @@ DB=ghtorrent
 
 QUERIES=$(wildcard *.sql)
 TABLES_VIEWS=$(shell sed -rn 's/create (table|or replace view)  *leadership\.([^ ]*).*/tables\/\2/p' *.sql)
-RESULTS=$(shell grep -l '^select' *.sql | sed 's/\(.*\)\.sql/results\/\1.txt/')
+RESULTS=$(shell grep -l '^select' *.sql | sed 's/\(.*\)\.sql/reports\/\1.txt/')
 
 .SUFFIXES:.sql .txt .tex .eps .pdf .gpl .table
 
-results/%.txt: %.sql
+reports/%.txt: %.sql
 	cat lockall.SQL $< unlockall.SQL | \
 	mysql -u $(DBUSER) -p"$(DBPASSWD)" $(DB) >$@
 

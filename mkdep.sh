@@ -3,7 +3,7 @@ DBNAME=leadership
 for i in *.sql ; do
   base=$(basename $i .sql)
   if grep '^select' $i >/dev/null ; then
-    target="results\\/$base.txt"
+    target="reports\\/$base.txt"
   else
     target="tables\\/$base"
   fi

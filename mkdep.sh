@@ -8,4 +8,5 @@ for i in *.sql ; do
     target="tables\\/$base"
   fi
   sed -rn "s/^.*(from|join)  *$DBNAME\.([a-zA-Z][-_a-zA-Z0-9]*).*\$/$target: tables\/\2/p" $i
-done
+done |
+sort -u

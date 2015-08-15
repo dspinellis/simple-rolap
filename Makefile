@@ -25,4 +25,7 @@ depend: .depend
 	rm -f ./.depend
 	sh mkdep.sh >./.depend
 
+graph.dot: .depend
+	./dep2dot.sed $< >$@
+
 include .depend

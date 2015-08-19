@@ -1,6 +1,6 @@
-DBUSER=ghtorrent
-DBPASSWD=ghtorrent
-DB=ghtorrent
+export DBUSER=ghtorrent
+export DBPASSWD=ghtorrent
+export DB=ghtorrent
 
 QUERIES=$(wildcard *.sql)
 TABLES_VIEWS=$(shell sed -rn 's/create (table|or replace view)  *leadership\.([^ ]*).*/tables\/\2/p' *.sql)
@@ -16,7 +16,7 @@ reports/%.txt: %.sql
 tables/%: %.sql
 	@mkdir -p tables
 	cat lockall.SQL $< unlockall.SQL | \
-	mysql -u $(DBUSER) -p"$(DBPASSWD)" $(DB) >$@
+	mysql --local-infile -u $(DBUSER) -p"$(DBPASSWD)" $(DB) >$@
 
 all: $(TABLES_VIEWS) $(RESULTS) clones
 	-beep
@@ -42,5 +42,10 @@ clones: reports/project_urls.txt
 		  git clone $$url ; \
 		done \
 	)
+
+growth.txt: clones measure-growth.sh
+	./measure-growth.sh >$@
+
+tables/growth: growth.txt
 
 include .depend

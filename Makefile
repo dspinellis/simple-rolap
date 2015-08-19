@@ -18,7 +18,7 @@ tables/%: %.sql
 	cat lockall.SQL $< unlockall.SQL | \
 	mysql -u $(DBUSER) -p"$(DBPASSWD)" $(DB) >$@
 
-all: $(TABLES_VIEWS) $(RESULTS)
+all: $(TABLES_VIEWS) $(RESULTS) clones
 	-beep
 
 depend: .depend
@@ -28,9 +28,19 @@ depend: .depend
 	sh mkdep.sh >./.depend
 
 clean:
-	rm -rf reports tables
+	rm -rf reports tables clones
 
 graph.dot: .depend
 	./dep2dot.sed $< >$@
+
+clones: reports/project_urls.txt
+	mkdir -p clones
+	( \
+		cd clones ; \
+		sed 1d ../reports/project_urls.txt | \
+		while read url ; do \
+		  git clone $$url ; \
+		done \
+	)
 
 include .depend

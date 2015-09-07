@@ -43,6 +43,9 @@ clones: reports/project_urls.txt
 		done \
 	)
 
+contribution.txt: clones measure-contribution.sh
+	./measure-contribution.sh >$@
+
 growth.txt: clones measure-growth.sh
 	./measure-growth.sh >$@
 

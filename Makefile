@@ -33,6 +33,9 @@ clean:
 graph.dot: .depend
 	./dep2dot.sed $< >$@
 
+graph.pdf: graph.dot
+	dot -Tpdf $< -o $@
+
 clones: reports/project_urls.txt
 	mkdir -p clones
 	( \

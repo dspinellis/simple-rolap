@@ -13,13 +13,11 @@ RESULTS=$(shell grep -l '^select' *.sql | sed 's/\(.*\)\.sql/reports\/\1.txt/')
 
 reports/%.txt: %.sql
 	@mkdir -p reports
-	cat lockall.SQL $< unlockall.SQL | \
-	mysql -u $(DBUSER) -p"$(DBPASSWD)" $(DB) >$@
+	sh run_sql.sh $< >$@
 
 tables/%: %.sql
 	@mkdir -p tables
-	cat lockall.SQL $< unlockall.SQL | \
-	mysql --local-infile -u $(DBUSER) -p"$(DBPASSWD)" $(DB) >$@
+	sh run_sql.sh $< >$@
 
 all: $(TABLES_VIEWS) $(RESULTS) clones
 	-beep

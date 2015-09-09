@@ -37,8 +37,8 @@ graph.dot: .depend
 graph.pdf: graph.dot
 	dot -Tpdf $< -o $@
 
-clones: reports/project_urls.txt
-	mkdir -p clones
+clones: # reports/project_urls.txt
+	false
 	( \
 		cd clones ; \
 		sed 1d ../reports/project_urls.txt | \

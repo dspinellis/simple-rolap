@@ -49,7 +49,7 @@ clones: reports/project_urls.txt
 		done \
 	)
 
-contribution.txt: clones measure-contribution.sh
+code_contribution.txt: clones measure-contribution.sh
 	sh measure-contribution.sh >$@
 
 growth.txt: clones measure-growth.sh

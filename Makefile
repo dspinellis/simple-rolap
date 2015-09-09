@@ -57,7 +57,7 @@ growth.txt: clones measure-growth.sh
 
 tables/growth: growth.txt
 
-test:
+test: $(TABLES_VIEWS)
 	@sh runtest.sh
 
 include .depend

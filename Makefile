@@ -50,11 +50,14 @@ clones: reports/project_urls.txt
 	)
 
 contribution.txt: clones measure-contribution.sh
-	./measure-contribution.sh >$@
+	sh measure-contribution.sh >$@
 
 growth.txt: clones measure-growth.sh
-	./measure-growth.sh >$@
+	sh measure-growth.sh >$@
 
 tables/growth: growth.txt
+
+test:
+	@sh runtest.sh
 
 include .depend

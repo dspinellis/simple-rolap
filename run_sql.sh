@@ -5,8 +5,8 @@
 
 {
   echo 'set autocommit=0;'
-  sed -n 's/^.*create  *table  *\([^ (]*\).*/drop table if exists \1/pi' "$1"
+  sed -n 's/^.*create  *table  *\([^ (]*\).*/drop table if exists \1;/pi' "$1"
   cat "$1"
   echo "commit;"
 } |
-mysql --local-infile -u $(DBUSER) -p"$(DBPASSWD)" $(DB)
+mysql --local-infile -u $DBUSER -p"$DBPASSWD" $DB

@@ -58,4 +58,7 @@ tables/growth: growth.txt
 test: $(TABLES_VIEWS)
 	@sh runtest.sh
 
+tags: $(QUERIES)
+	sh make-tags.sh $(QUERIES)
+
 include .depend

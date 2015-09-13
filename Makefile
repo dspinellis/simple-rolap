@@ -37,15 +37,8 @@ graph.dot: .depend
 graph.pdf: graph.dot
 	dot -Tpdf $< -o $@
 
-clones: # reports/project_urls.txt
-	false
-	( \
-		cd clones ; \
-		sed 1d ../reports/project_urls.txt | \
-		while read url ; do \
-		  git clone $$url ; \
-		done \
-	)
+clones: reports/project_urls.txt
+	sh clone.sh
 
 code_contribution.txt: clones measure-contribution.sh
 	sh measure-contribution.sh >$@

@@ -54,4 +54,8 @@ test: $(TABLES_VIEWS)
 tags: $(QUERIES)
 	sh make-tags.sh $(QUERIES)
 
+# Sync over the reports
+rsync:
+	rsync -av stereo:leadership-performance/reports/ reports/
+
 include .depend

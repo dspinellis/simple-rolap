@@ -22,6 +22,9 @@ tables/%: %.sql
 all: $(TABLES_VIEWS) $(RESULTS) clones
 	-beep
 
+results.txt: corrtest.R reports/performance_report.txt
+	./corrtest.R >$?
+
 depend: .depend
 
 .depend: $(QUERIES)

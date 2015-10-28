@@ -48,6 +48,8 @@ growth.txt: clones measure-growth.sh
 
 tables/growth: growth.txt
 
+tables/code_contribution: code_contribution.txt
+
 test: $(TABLES_VIEWS)
 	@sh runtest.sh
 

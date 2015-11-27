@@ -65,6 +65,6 @@ rsync:
 
 # Put correlations to clipboard for spreadsheet copying
 correlations:
-	./corrtest.R | winclip -cu
+	./corrtest.R | winclip -cm
 
 include .depend

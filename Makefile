@@ -63,4 +63,8 @@ tags: $(QUERIES)
 rsync:
 	rsync -av stereo:leadership-performance/reports/ reports/
 
+# Put correlations to clipboard for spreadsheet copying
+correlations:
+	./corrtest.R | winclip -cu
+
 include .depend

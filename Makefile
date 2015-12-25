@@ -23,7 +23,7 @@ all: $(TABLES_VIEWS) $(RESULTS) clones
 	-beep
 
 results.txt: corrtest.R reports/performance_report.txt
-	./corrtest.R >$?
+	./corrtest.R >$@
 
 depend: .depend
 

@@ -25,6 +25,12 @@ all: $(TABLES_VIEWS) $(RESULTS) clones
 results.txt: corrtest.R reports/performance_report.txt
 	./corrtest.R >$@
 
+# Copy the corrtest results for pasting into the spreadsheet
+corrtest:
+	./corrtest.R | winclip -cm
+
+.PHONY: corrtest
+
 depend: .depend
 
 .depend: $(QUERIES)

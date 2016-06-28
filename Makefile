@@ -15,12 +15,21 @@ reports/%.txt: %.sql
 	@mkdir -p reports
 	sh run_sql.sh $< >$@
 
-tables/%: %.sql
+tables/%: %.sql leadership
 	@mkdir -p tables
 	sh run_sql.sh $< >$@
 
 all: $(TABLES_VIEWS) $(RESULTS) clones
 	-beep
+
+leadership:
+	( \
+	echo 'create database leadership;' ; \
+	echo "GRANT ALL PRIVILEGES ON leadership.* to ghtorrent@'localhost';" ; \
+	echo 'flush privileges;' \
+	) | \
+	mysql -u root -p && \
+	touch $@
 
 results.txt: corrtest.R reports/performance_report.txt
 	./corrtest.R >$@

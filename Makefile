@@ -56,7 +56,7 @@ graph.pdf: graph.dot
 	dot -Tpdf $< -o $@
 
 clones: reports/project_urls.txt
-	sh clone.sh
+	sh clone.sh && touch $@
 
 code_contribution.txt: clones measure-contribution.sh
 	sh measure-contribution.sh >$@

@@ -64,7 +64,7 @@ code_contribution.txt: clones measure-contribution.sh
 growth.txt: clones measure-growth.sh
 	sh measure-growth.sh >$@
 
-tables/growth: growth.txt
+tables/project_lines: growth.txt
 
 tables/code_contribution: code_contribution.txt
 

@@ -1,6 +1,6 @@
 export DBUSER=ghtorrent
 export DBPASSWD=ghtorrent
-export DB=ghtorrent
+export DB=ghtorrent2
 
 # Ensure targets are deleted if a command fails
 .DELETE_ON_ERROR:

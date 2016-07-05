@@ -19,7 +19,7 @@ tables/%: %.sql leadership
 	@mkdir -p tables
 	sh run_sql.sh $< >$@
 
-all: $(TABLES_VIEWS) $(RESULTS) clones
+all: $(TABLES_VIEWS) $(RESULTS)
 	-beep
 
 leadership:
@@ -55,13 +55,12 @@ graph.dot: .depend
 graph.pdf: graph.dot
 	dot -Tpdf $< -o $@
 
-clones: reports/project_urls.txt
-	sh clone.sh && touch $@
-
-code_contribution.txt: clones measure-contribution.sh
+code_contribution.txt: measure-contribution.sh reports/project_urls.txt
 	sh measure-contribution.sh >$@
 
-growth.txt: clones measure-growth.sh
+# The code_contribution.txt file is a dependency in order
+# to ensure that the projects are cloned
+growth.txt: code_contribution.txt measure-growth.sh
 	sh measure-growth.sh >$@
 
 tables/project_lines: growth.txt

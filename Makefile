@@ -47,7 +47,7 @@ depend: .depend
 	sh mkdep.sh >./.depend
 
 clean:
-	rm -rf reports tables clones
+	rm -rf reports tables clones contribution growth
 
 graph.dot: .depend
 	./dep2dot.sed $< >$@

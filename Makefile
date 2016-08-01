@@ -52,6 +52,9 @@ clean:
 graph.dot: .depend
 	./dep2dot.sed $< >$@
 
+sorted-dependencies: .depend
+	./dep2tsort.sed $< | tsort >$@
+
 graph.pdf: graph.dot
 	dot -Tpdf $< -o $@
 

@@ -78,7 +78,7 @@ tags: $(QUERIES)
 
 # Sync over the reports
 rsync:
-	rsync -av stereo:leadership-performance/reports/ reports/
+	rsync -azv stereo:leadership-performance/reports/ reports/
 
 # Put correlations to clipboard for spreadsheet copying
 correlations:

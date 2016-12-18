@@ -79,7 +79,7 @@ tags: $(QUERIES)
 # Sync over the reports
 rsync:
 	rsync -azv stereo:leadership-performance/reports/ reports/
-	rsync -azv leadership-analysis.nbk/ istlab:public_html/leadership-analysis/
+	rsync -azv leadership-analysis/ istlab:public_html/leadership-analysis/
 
 # Put correlations to clipboard for spreadsheet copying
 correlations:

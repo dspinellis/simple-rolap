@@ -32,11 +32,9 @@ RESULTS=$(shell grep -l '^select' *.sql | sed 's/\(.*\)\.sql/reports\/\1.txt/')
 .SUFFIXES:.sql .txt .pdf
 
 reports/%.txt: %.sql
-	@mkdir -p reports
 	sh run_sql.sh $< >$@
 
 tables/%: %.sql $(ROLAPDB)
-	@mkdir -p tables
 	sh run_sql.sh $< >$@
 
 all: $(TABLES_VIEWS) $(RESULTS)

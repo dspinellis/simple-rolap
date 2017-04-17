@@ -1,6 +1,6 @@
 #!/bin/sed -f
 #
-# Create a sorted list of table dependencies
+# Create a list of table dependencies ready for topological sorting
 #
 # Copyright 2017 Diomidis Spinellis
 #
@@ -17,5 +17,7 @@
 # limitations under the License.
 #
 
+# Remove .txt suffix
 s/\.txt//
+# Change order: a b into b a
 s/^\([^:]*\): \(.*\)/\2 \1/

@@ -1,4 +1,8 @@
 #!/bin/sed -f
+#
+# Convert a list of table and report dependencies into a GraphViz dot(1)
+# diagram
+#
 1i\
 digraph D {
 $a\

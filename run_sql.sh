@@ -2,6 +2,7 @@
 #
 # Run the specified SQL file with autocommit disabled
 # If the SQL creates a table ensure it is removed
+#
 
 {
   echo 'set autocommit=0;'
@@ -9,4 +10,4 @@
   cat "$1"
   echo "commit;"
 } |
-mysql --local-infile -u $DBUSER -p"$DBPASSWD" $DB
+mysql --local-infile -u $DBUSER -p"$DBPASSWD" $MAINDB

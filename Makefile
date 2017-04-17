@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+# Change the following four variables to match your environment
+# or set them before invoking make(1)
 export DBUSER=ghtorrent
 export DBPASSWD=ghtorrent
 export MAINDB=ghtorrent2

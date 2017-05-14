@@ -1,0 +1,21 @@
+# Projects that have been forked
+
+BEGIN SETUP
+
+projects:
+id	forked_from
+1	15
+2	15
+3	10
+4	NULL
+
+END
+
+INCLUDE CREATE forked_projects.sql
+
+BEGIN RESULT
+driveby.forked_projects:
+id
+15
+10
+END

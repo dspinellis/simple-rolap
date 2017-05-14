@@ -18,10 +18,25 @@
 # limitations under the License.
 #
 
-{
-  echo 'set autocommit=0;'
-  sed -n 's/^.*create  *table  *\([^ (]*\).*/drop table if exists \1;/pi' "$1"
-  cat "$1"
-  echo "commit;"
-} |
-mysql --local-infile -u $DBUSER -p"$DBPASSWD" $MAINDB
+set -x
+
+case $RDBMS in
+  mysql)
+    {
+      echo 'set autocommit=0;'
+      sed -n 's/^.*create  *table  *\([^ (]*\).*/drop table if exists \1;/pi' "$1"
+      cat "$1"
+      echo "commit;"
+    } |
+    mysql --local-infile -u $DBUSER -p"$DBPASSWD" $MAINDB
+    ;;
+  sqlite)
+    {
+      echo "ATTACH DATABASE '$ROLAPDB.db' AS $ROLAPDB;"
+      sed -n 's/^.*create  *table  *\([^ (]*\).*/drop table if exists \1;/pi' "$1"
+      cat "$1"
+    } |
+    tee foo.sql |
+    sqlite3 $MAINDB.db
+    ;;
+esac

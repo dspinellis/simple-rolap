@@ -19,10 +19,15 @@
 
 # Change the following four variables to match your environment
 # or set them before invoking make(1)
-export DBUSER=ghtorrent
-export DBPASSWD=ghtorrent
-export MAINDB=ghtorrent2
-ROLAPDB=driveby
+export RDBMS?=sqlite
+export MAINDB?=rxjs-ghtorrent
+export ROLAPDB?=driveby
+
+#export RDBMS?=mysql
+#export DBUSER?=ghtorrent
+#export DBPASSWD?=ghtorrent
+#export MAINDB?=ghtorrent2
+#export ROLAPDB?=driveby
 
 # Ensure targets are deleted if a command fails
 .DELETE_ON_ERROR:

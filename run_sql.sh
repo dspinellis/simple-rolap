@@ -18,8 +18,6 @@
 # limitations under the License.
 #
 
-set -x
-
 case $RDBMS in
   mysql)
     {
@@ -36,7 +34,10 @@ case $RDBMS in
       sed -n 's/^.*create  *table  *\([^ (]*\).*/drop table if exists \1;/pi' "$1"
       cat "$1"
     } |
-    tee foo.sql |
     sqlite3 $MAINDB.db
+    ;;
+  *)
+    echo "Unknown or unset RDBMS: [$RDBMS]" 1>&2
+    exit 1
     ;;
 esac

@@ -22,21 +22,23 @@
 export DBUSER=ghtorrent
 export DBPASSWD=ghtorrent
 export MAINDB=ghtorrent2
-ROLAPDB=rolapdb
+ROLAPDB=driveby
 
 # Ensure targets are deleted if a command fails
 .DELETE_ON_ERROR:
 
 QUERIES=$(wildcard *.sql)
-TABLES_VIEWS=$(shell sed -rn 's/create (table|or replace view)  *$ROLAPDB\.([^ ]*).*/tables\/\2/p' *.sql)
+TABLES_VIEWS=$(shell sed -rn 's/create (table|or replace view)  *$(ROLAPDB)\.([^ ]*).*/tables\/\2/p' *.sql)
 RESULTS=$(shell grep -l '^select' *.sql | sed 's/\(.*\)\.sql/reports\/\1.txt/')
 
 .SUFFIXES:.sql .txt .pdf
 
 reports/%.txt: %.sql
+	mkdir -p reports
 	sh run_sql.sh $< >$@
 
 tables/%: %.sql $(ROLAPDB)
+	mkdir -p tables
 	sh run_sql.sh $< >$@
 
 all: $(TABLES_VIEWS) $(RESULTS)

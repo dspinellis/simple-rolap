@@ -18,8 +18,6 @@
 # limitations under the License.
 #
 
-mkdir -p tables reports
-
 {
   echo 'set autocommit=0;'
   sed -n 's/^.*create  *table  *\([^ (]*\).*/drop table if exists \1;/pi' "$1"

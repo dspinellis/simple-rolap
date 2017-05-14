@@ -40,11 +40,11 @@ RESULTS=$(shell grep -l '^select' *.sql | sed 's/\(.*\)\.sql/reports\/\1.txt/')
 
 .SUFFIXES:.sql .txt .pdf
 
-reports/%.txt: %.sql
+reports/%.txt: %.sql $(ROLAPDB) $(DEPENDENCIES)
 	mkdir -p reports
 	sh $(SRD)/run_sql.sh $< >$@
 
-tables/%: %.sql $(ROLAPDB)
+tables/%: %.sql $(ROLAPDB) $(DEPENDENCIES)
 	mkdir -p tables
 	sh $(SRD)/run_sql.sh $< >$@
 

@@ -1,0 +1,26 @@
+# Projects that have at least one PR associated with them
+
+BEGIN SETUP
+
+driveby.forked_projects:
+id
+1
+2
+3
+4
+
+issues:
+id	repo_id
+15	1
+16	1
+17	4
+END
+
+INCLUDE CREATE pr_projects.sql
+
+BEGIN RESULT
+driveby.pr_projects:
+id
+1
+4
+END

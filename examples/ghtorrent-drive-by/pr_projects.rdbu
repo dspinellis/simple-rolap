@@ -9,8 +9,8 @@ id
 3
 4
 
-issues:
-id	repo_id
+pull_requests:
+id	base_repo_id
 15	1
 16	1
 17	4

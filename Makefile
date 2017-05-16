@@ -75,6 +75,9 @@ sorted-dependencies: .depend
 graph.pdf: graph.dot
 	dot -Tpdf $< -o $@
 
+graph.png: graph.dot
+	dot -Tpng $< -o $@
+
 test:
 	$(SRD)/run_test.sh
 

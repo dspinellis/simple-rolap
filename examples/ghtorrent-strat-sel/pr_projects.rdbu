@@ -2,7 +2,7 @@
 
 BEGIN SETUP
 
-driveby.forked_projects:
+stratsel.forked_projects:
 id
 1
 2
@@ -19,7 +19,7 @@ END
 INCLUDE CREATE pr_projects.sql
 
 BEGIN RESULT
-driveby.pr_projects:
+stratsel.pr_projects:
 id
 1
 4

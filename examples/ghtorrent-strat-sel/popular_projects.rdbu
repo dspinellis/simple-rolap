@@ -1,13 +1,13 @@
 # Projects that have a recent commit associated with them
 
 BEGIN SETUP
-driveby.recent_issue_projects:
+stratsel.recent_issue_projects:
 id
 1
 2
 3
 
-driveby.project_stars:
+stratsel.project_stars:
 id	stars
 1	1
 2	0
@@ -17,7 +17,7 @@ END
 INCLUDE CREATE popular_projects.sql
 
 BEGIN RESULT
-driveby.popular_projects:
+stratsel.popular_projects:
 id
 3
 END

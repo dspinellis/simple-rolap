@@ -1,6 +1,6 @@
 .depend
-driveby
-driveby.db
+stratsel
+stratsel.db
 rxjs-ghtorrent.db
 tables
 graph.*

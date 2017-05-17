@@ -1,6 +1,6 @@
 export RDBMS?=sqlite
 export MAINDB?=rxjs-ghtorrent
-export ROLAPDB?=driveby
+export ROLAPDB?=stratsel
 export DEPENDENCIES=rxjs-ghtorrent.db
 
 include ../../Makefile

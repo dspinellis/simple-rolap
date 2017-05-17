@@ -1,7 +1,7 @@
 # Projects with recent issues and the number of stars
 
 BEGIN SETUP
-driveby.recent_issue_projects:
+stratsel.recent_issue_projects:
 id
 1
 2
@@ -17,7 +17,7 @@ END
 INCLUDE CREATE project_stars.sql
 
 BEGIN RESULT
-driveby.project_stars:
+stratsel.project_stars:
 id	stars
 1	2
 2	1

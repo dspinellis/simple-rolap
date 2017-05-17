@@ -14,7 +14,7 @@ END
 INCLUDE CREATE forked_projects.sql
 
 BEGIN RESULT
-driveby.forked_projects:
+stratsel.forked_projects:
 id
 15
 10

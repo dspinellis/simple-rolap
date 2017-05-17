@@ -3,3 +3,4 @@ driveby
 driveby.db
 rxjs-ghtorrent.db
 tables
+graph.*

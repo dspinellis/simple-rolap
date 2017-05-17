@@ -1,0 +1,22 @@
+# Projects that have a recent commit associated with them
+
+BEGIN SETUP
+stratsel.popular_projects:
+id
+1
+2
+
+projects:
+id	url
+1	'https://api.github.com/repos/foo'
+2	'https://api.github.com/repos/bar'
+3	'https://api.github.com/repos/foobar'
+END
+
+INCLUDE SELECT project_urls.sql
+
+BEGIN RESULT
+id	url
+1	'https://github.com/foo'
+2	'https://github.com/bar'
+END

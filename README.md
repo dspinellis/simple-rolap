@@ -18,6 +18,13 @@ are unsupported or unusable.
 The scripts are written for *MySQL* and *SQLite*,
 but they should be easy to port to other relational database systems.
 
+For complex relational OLAP queries, *simple-rolap* can be combined particularly
+effectively with [RDBUnit](https://github.com/dspinellis/rdbunit).
+You can find a complete tutorial on using *simple-rolap* with *RDBUnit*
+for mining Git repositories in a
+[technical briefing](https://www.spinellis.gr/git-mine-briefing/)
+presented at the 2017 International Conference on Software Engineering.
+
 ## Installation
 The *simple-rolap* scripts are used by including the provided *Makefile*.
 Consequently, all that is needed is to provide the repository in suitably

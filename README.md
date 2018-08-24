@@ -24,6 +24,9 @@ You can find a complete tutorial on using *simple-rolap* with *RDBUnit*
 for mining Git repositories in a
 [technical briefing](https://www.spinellis.gr/git-mine-briefing/)
 presented at the 2017 International Conference on Software Engineering.
+You can cite this work as follows.
+
+Georgios Gousios and Diomidis Spinellis. Mining software engineering data from GitHub. In *Proceedings of the 39th International Conference on Software Engineering Companion, ICSE-C '17*, pages 501–502, Piscataway, NJ, USA, May 2017. IEEE Press. Technical Briefing. [doi:10.1109/ICSE-C.2017.164](https://dx.doi.org/10.1109%2FICSE-C.2017.164)
 
 ## Installation
 The *simple-rolap* scripts are used by including the provided *Makefile*.

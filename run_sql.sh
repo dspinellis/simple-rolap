@@ -26,7 +26,7 @@ case $RDBMS in
       cat "$1"
       echo "commit;"
     } |
-    mysql --local-infile -u $DBUSER -p"$DBPASSWD" $MAINDB
+    mysql --quick --local-infile -u $DBUSER -p"$DBPASSWD" $MAINDB
     ;;
   sqlite)
     {

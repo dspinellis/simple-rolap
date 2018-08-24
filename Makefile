@@ -54,6 +54,7 @@ $(ROLAPDB):
 	echo $(MAKEFILE_LIST)
 	sh $(SRD)/create_db.sh
 	touch $@
+	echo $@ >>.gitignore
 
 .PHONY: corrtest
 

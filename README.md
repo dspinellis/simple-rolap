@@ -39,7 +39,7 @@ sudo git clone --depth=1 https://github.com/dspinellis/simple-rolap.git
 ```
 
 The system where *simple-rolap* is run must have and installation of the
-database unit beend tested, *GNU make*,
+database being used, *GNU make*,
 and (if you want to visualize the associated dependency graphs)
 [GraphViz](http://graphviz.org/).
 

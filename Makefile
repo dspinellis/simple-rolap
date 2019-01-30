@@ -43,28 +43,31 @@ RESULTS=$(shell grep -l '^select' *.sql | sed 's/\(.*\)\.sql/reports\/\1.txt/')
 .SUFFIXES:.sql .txt .pdf
 
 reports/%.txt: %.sql $(ROLAPDB) $(DEPENDENCIES)
-	mkdir -p reports
-	sh $(SRD)/run_sql.sh $< >$@
+	@echo "[Create report from $<]"
+	@mkdir -p reports
+	@sh $(SRD)/run_sql.sh $< >$@
 
 tables/%: %.sql $(ROLAPDB) $(DEPENDENCIES)
-	mkdir -p tables
-	sh $(SRD)/run_sql.sh $< >$@
+	@echo "[Create table from $<]"
+	@mkdir -p tables
+	@sh $(SRD)/run_sql.sh $< >$@
 
 all: $(TABLES_VIEWS) $(RESULTS)
 
 $(ROLAPDB):
-	echo $(MAKEFILE_LIST)
-	sh $(SRD)/create_db.sh
-	touch $@
-	echo $@ >>.gitignore
+	@echo "[Create database $(ROLAPDB)]"
+	@sh $(SRD)/create_db.sh
+	@touch $@
+	@echo $@ >>.gitignore
 
 .PHONY: corrtest
 
 depend: .depend
 
 .depend: $(QUERIES)
-	rm -f ./.depend
-	sh $(SRD)/mkdep.sh >./.depend
+	@echo "[Create/update dependencies]"
+	@rm -f ./.depend
+	@sh $(SRD)/mkdep.sh >./.depend
 
 clean:
 	rm -rf reports tables .depend $(ROLAPDB)

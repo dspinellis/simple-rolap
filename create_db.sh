@@ -1,4 +1,3 @@
-
 #!/bin/sh
 #
 # Run the specified SQL file with autocommit disabled

@@ -12,7 +12,7 @@ file_list()
 }
 
 while IFS=\| read id url ; do
-  git clone --bare "$url" $id
+  test -d $id || git clone --bare "$url" $id
   cd $id
   nfiles=$(file_list | wc -l)
   nlines=$(file_list -z |

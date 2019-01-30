@@ -92,4 +92,7 @@ test:
 tags: $(QUERIES)
 	sh mktags.sh $(QUERIES)
 
+# Include dependencies if they exist
+ifneq ("$(wildcard .depend)","")
 include .depend
+endif

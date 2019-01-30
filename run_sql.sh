@@ -18,21 +18,25 @@
 # limitations under the License.
 #
 
+# Add a drop table before a create table command
+add_drop_table()
+{
+  sed 's/^\(.*create  *table  *\([^ (]*\).*\)/drop table if exists \2; \1/i' "$1"
+}
+
 case $RDBMS in
   mysql)
     {
-      echo 'set autocommit=0;'
-      sed -n 's/^.*create  *table  *\([^ (]*\).*/drop table if exists \1;/pi' "$1"
-      cat "$1"
+      echo -n 'set autocommit=0; '
+      add_drop_table "$1"
       echo "commit;"
     } |
     mysql --quick --local-infile -u $DBUSER -p"$DBPASSWD" $MAINDB
     ;;
   sqlite)
     {
-      echo "ATTACH DATABASE '$ROLAPDB.db' AS $ROLAPDB;"
-      sed -n 's/^.*create  *table  *\([^ (]*\).*/drop table if exists \1;/pi' "$1"
-      cat "$1"
+      echo -n "ATTACH DATABASE '$ROLAPDB.db' AS $ROLAPDB; "
+      add_drop_table "$1"
     } |
     sqlite3 $MAINDB.db
     ;;

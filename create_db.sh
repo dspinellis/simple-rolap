@@ -27,8 +27,8 @@ case $RDBMS in
     need_var ROLAPDB
     need_var DBUSER
     (
-      echo 'create database $(ROLAPDB);' ;
-      echo "GRANT ALL PRIVILEGES ON $(ROLAPDB).* to $(DBUSER)@'localhost';" ;
+      echo "create database $ROLAPDB;" ;
+      echo "GRANT ALL PRIVILEGES ON $ROLAPDB.* to $DBUSER@'localhost';" ;
       echo 'flush privileges;'
     ) |
     mysql -u root -p

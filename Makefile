@@ -70,7 +70,9 @@ depend: .depend
 	@sh $(SRD)/mkdep.sh >./.depend
 
 clean:
-	rm -rf reports tables .depend $(ROLAPDB)
+	@echo '[Remove tables, reports; drop database $(ROLAPDB)]'
+	@rm -rf reports tables .depend $(ROLAPDB)
+	@sh $(SRD)/drop_db.sh
 
 graph.dot: .depend
 	$(SRD)/dep2dot.sed $< >$@

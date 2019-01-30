@@ -24,8 +24,23 @@ add_drop_table()
   sed 's/^\(.*create  *table  *\([^ (]*\).*\)/drop table if exists \2; \1/i' "$1"
 }
 
+# Exit with an error if the specified environment variable isn't set
+need_var()
+{
+  local val=$(eval echo \$$1)
+  if [ -z "$val" ] ; then
+    echo "Required environment variable $1 is not set." 1>&2
+    exit 1
+  fi
+}
+
+need_var RDBMS
+need_var MAINDB
+
 case $RDBMS in
   mysql)
+    need_var DBUSER
+    need_var DBPASSWD
     {
       echo -n 'set autocommit=0; '
       add_drop_table "$1"
@@ -34,6 +49,7 @@ case $RDBMS in
     mysql --quick --local-infile -u $DBUSER -p"$DBPASSWD" $MAINDB
     ;;
   sqlite)
+    need_var ROLAPDB
     {
       echo -n "ATTACH DATABASE '$ROLAPDB.db' AS $ROLAPDB; "
       add_drop_table "$1"
@@ -41,7 +57,7 @@ case $RDBMS in
     sqlite3 $MAINDB.db
     ;;
   *)
-    echo "Unknown or unset RDBMS: [$RDBMS]" 1>&2
+    echo "The RDBMS variable specifies an unsupported database engine: [$RDBMS]" 1>&2
     exit 1
     ;;
 esac

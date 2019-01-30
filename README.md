@@ -111,7 +111,7 @@ alter table leadership.blacklisted_projects add index(id);
 A query module is a simple SQL `SELECT` query, such as the following.
 ```sql
 -- URLs of popular projects
-select projects.id, 'https://github.com/' || substr(url, 30) as url
+select projects.id, concat('https://github.com/', substr(url, 30)) as url
 from stratsel.popular_projects
 left join projects
 on projects.id = popular_projects.id;

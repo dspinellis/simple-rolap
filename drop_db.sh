@@ -25,6 +25,7 @@ need_var RDBMS
 case $RDBMS in
   mysql)
     need_var ROLAPDB
+    echo '[Enter database administrator password for user root]'
     (
       echo "drop database if exists $ROLAPDB;" ;
     ) |

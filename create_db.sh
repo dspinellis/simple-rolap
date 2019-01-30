@@ -26,6 +26,7 @@ case $RDBMS in
   mysql)
     need_var ROLAPDB
     need_var DBUSER
+    echo '[Enter database administrator password for user root]'
     (
       echo "create database $ROLAPDB;" ;
       echo "GRANT ALL PRIVILEGES ON $ROLAPDB.* to $DBUSER@'localhost';" ;

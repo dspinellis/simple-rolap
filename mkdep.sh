@@ -18,6 +18,11 @@
 # limitations under the License.
 #
 
+if [ -z "$ROLAPDB" ] ; then
+  echo 'Environment variable ROLAPDB is not set' !>&2
+  exit 1
+fi
+
 for i in *.sql ; do
   base=$(basename "$i" .sql)
   if grep -i '^select' "$i" >/dev/null ; then
@@ -25,6 +30,6 @@ for i in *.sql ; do
   else
     target="tables\\/$base"
   fi
-  sed -rn "/^delete/iQ;s/^.*(from|join)  *$ROLAPDB\.([a-zA-Z][-_a-zA-Z0-9]*).*\$/$target: tables\/\2/ip" "$i"
+  sed -rn "/^delete/iQ;s/^.*(from|join)[ \t]*$ROLAPDB\.([a-zA-Z][-_a-zA-Z0-9]*).*\$/$target: tables\/\2/ip" "$i"
 done |
 sort -u

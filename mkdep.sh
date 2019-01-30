@@ -30,6 +30,6 @@ for i in *.sql ; do
   else
     target="tables\\/$base"
   fi
-  sed -rn "/^delete/iQ;s/^.*(from|join)[ \t]*$ROLAPDB\.([a-zA-Z][-_a-zA-Z0-9]*).*\$/$target: tables\/\2/ip" "$i"
+  sed -rn "/^delete/IQ;s/^.*(from|join)[ \t]*$ROLAPDB\.([a-zA-Z][-_a-zA-Z0-9]*).*\$/$target: tables\/\2/ip" "$i"
 done |
 sort -u

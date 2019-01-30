@@ -1,9 +1,6 @@
 #!/bin/sh
 #
-# Run the specified SQL file with autocommit disabled
-# If the SQL creates a table ensure it is removed
-#
-# Copyright 2017 Diomidis Spinellis
+# Copyright 2019 Diomidis Spinellis
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,25 +15,12 @@
 # limitations under the License.
 #
 
-. $ROLAP_DIR/need_var.sh
-
-need_var RDBMS
-
-case $RDBMS in
-  mysql)
-    need_var ROLAPDB
-    need_var DBUSER
-    (
-      echo 'create database $(ROLAPDB);' ;
-      echo "GRANT ALL PRIVILEGES ON $(ROLAPDB).* to $(DBUSER)@'localhost';" ;
-      echo 'flush privileges;'
-    ) |
-    mysql -u root -p
-    ;;
-  sqlite)
-    ;;
-  *)
-    echo "The RDBMS variable specifies an unsupported database engine: [$RDBMS]" 1>&2
+# Exit with an error if the specified environment variable isn't set
+need_var()
+{
+  local val=$(eval echo \$$1)
+  if [ -z "$val" ] ; then
+    echo "Required environment variable $1 is not set." 1>&2
     exit 1
-    ;;
-esac
+  fi
+}

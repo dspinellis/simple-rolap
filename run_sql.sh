@@ -24,15 +24,7 @@ add_drop_table()
   sed 's/^\(.*create  *table  *\([^ (]*\).*\)/drop table if exists \2; \1/i' "$1"
 }
 
-# Exit with an error if the specified environment variable isn't set
-need_var()
-{
-  local val=$(eval echo \$$1)
-  if [ -z "$val" ] ; then
-    echo "Required environment variable $1 is not set." 1>&2
-    exit 1
-  fi
-}
+. $ROLAP_DIR/need_var.sh
 
 need_var RDBMS
 need_var MAINDB

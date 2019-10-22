@@ -52,7 +52,7 @@ tables/%: %.sql $(ROLAPDB) $(DEPENDENCIES)
 	@mkdir -p tables
 	@sh $(SRD)/run_sql.sh $< >$@
 
-all: $(TABLES_VIEWS) $(RESULTS)
+all: .depend $(TABLES_VIEWS) $(RESULTS)
 
 $(ROLAPDB):
 	@echo "[Create database $(ROLAPDB)]"

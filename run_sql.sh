@@ -32,13 +32,16 @@ need_var MAINDB
 case $RDBMS in
   mysql)
     need_var DBUSER
-    need_var DBPASSWD
     {
       echo -n 'set autocommit=0; '
       add_drop_table "$1"
       echo "commit;"
     } |
-    mysql --quick --local-infile -u $DBUSER -p"$DBPASSWD" $MAINDB
+    if [ -n "$DBPASSWD" ] ; then
+      mysql --quick --local-infile -u "$DBUSER" -p"$DBPASSWD" $MAINDB
+    else
+      mysql --quick --local-infile -u "$DBUSER" $MAINDB
+    fi
     ;;
   sqlite)
     need_var ROLAPDB

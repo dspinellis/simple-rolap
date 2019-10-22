@@ -37,8 +37,8 @@ SRD=$(dir $(lastword $(filter-out .depend,$(MAKEFILE_LIST))))
 export ROLAP_DIR=$(SRD)
 
 QUERIES=$(wildcard *.sql)
-TABLES_VIEWS=$(shell sed -rn 's/create (table|or replace view)  *$(ROLAPDB)\.([^ ]*).*/tables\/\2/p' *.sql)
-RESULTS=$(shell grep -l '^select' *.sql | sed 's/\(.*\)\.sql/reports\/\1.txt/')
+TABLES_VIEWS=$(shell sed -rn 's/create (table|or replace view)  *$(ROLAPDB)\.([^ ]*).*/tables\/\2/pi' *.sql)
+RESULTS=$(shell grep -li '^select' *.sql | sed 's/\(.*\)\.sql/reports\/\1.txt/')
 
 .SUFFIXES:.sql .txt .pdf
 

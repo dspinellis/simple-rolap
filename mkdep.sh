@@ -3,7 +3,7 @@
 # Create a list of dependencies for all SQL files in the current
 # directory
 #
-# Copyright 2017 Diomidis Spinellis
+# Copyright 2017-2019 Diomidis Spinellis
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,6 +24,14 @@ if [ -z "$ROLAPDB" ] ; then
 fi
 
 for i in *.sql ; do
+
+  # Issue error if dependencies can't be tracked
+  if grep -i '/^.*(from|join)[ \t]' "$i" ; then
+    echo 'No table specified after FROM or JOIN in the above statement(s)' 1>&2
+    echo 'Dependencies cannot be correctly tracked' 1>&2
+    exit 1
+  fi
+
   base=$(basename "$i" .sql)
   if grep -i '^select' "$i" >/dev/null ; then
     target="reports\\/$base.txt"

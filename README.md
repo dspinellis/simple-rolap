@@ -13,6 +13,13 @@ new queries can use already calculated results and that every
 time a query is changed all tables that depend on it (and only those)
 are automatically repopulated.
 
+When using the MySQL engine, the table population timestamps are
+automatically propagated from the database to the files that track
+the table creation times in the `tables` folder.
+This allows multiple users to work together with separate instances
+of a `simple-rolap` repository, without requiring the recalculation
+of expensive tables.
+
 The provided functionality is mainly useful in cases where *materialized views*
 are unsupported or unusable.
 The scripts are written for *MySQL* and *SQLite*,

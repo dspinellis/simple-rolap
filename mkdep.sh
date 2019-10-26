@@ -1,7 +1,12 @@
 #!/bin/sh
 #
 # Create a list of dependencies for all SQL files in the current
-# directory
+# directory.
+# As a side effect:
+# 1. Ensure that table names are specified on the same line as FROM and
+#    JOIN
+# 2. set the timestamp of table-tracking files to the corresponding
+#    table's creation time.
 #
 # Copyright 2017-2019 Diomidis Spinellis
 #
@@ -18,10 +23,10 @@
 # limitations under the License.
 #
 
-if [ -z "$ROLAPDB" ] ; then
-  echo 'Environment variable ROLAPDB is not set' !>&2
-  exit 1
-fi
+. $ROLAP_DIR/need_var.sh
+
+need_var RDBMS
+need_var ROLAPDB
 
 for i in *.sql ; do
 
@@ -37,7 +42,21 @@ for i in *.sql ; do
     target="reports\\/$base.txt"
   else
     target="tables\\/$base"
+
+    # Freshen target file's date if the table already exists
+    case $RDBMS in
+      mysql)
+	need_var DBUSER
+	T=$(echo "SELECT create_time FROM INFORMATION_SCHEMA.TABLES where table_schema = '$ROLAPDB' AND table_name = '$base'" | mysql -N -u $DBUSER $ROLAPDB)
+	;;
+    esac
+    if [ -n "$T" ] ; then
+      mkdir -p tables
+      touch -d "$T" "tables/$base"
+    fi
   fi
+
+  # Output dependencies
   sed -rn "/^delete/IQ;s/^.*(from|join)[ \t]*$ROLAPDB\.([a-zA-Z][-_a-zA-Z0-9]*).*\$/$target: tables\/\2/ip" "$i"
 done |
 sort -u

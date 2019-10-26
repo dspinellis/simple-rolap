@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Run the specified SQL file with autocommit disabled
-# If the SQL creates a table ensure it is removed
+# Create and setup access for the specified database if it does
+# not exist.
 #
-# Copyright 2017 Diomidis Spinellis
+# Copyright 2017-2019 Diomidis Spinellis
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@ case $RDBMS in
   mysql)
     need_var ROLAPDB
     need_var DBUSER
+    # Exit if database already exists
+    echo quit | mysql -u $DBUSER $ROLAPDB 2>/dev/null && exit
     echo '[Enter database administrator password for user root]'
     (
       echo "create database $ROLAPDB;" ;

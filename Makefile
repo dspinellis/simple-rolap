@@ -2,7 +2,7 @@
 # Makefile to automate the relational online analytical processing of complex
 # queries
 #
-# Copyright 2017 Diomidis Spinellis
+# Copyright 2017-2019 Diomidis Spinellis
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,13 +60,10 @@ $(ROLAPDB):
 	@touch $@
 	@echo $@ >>.gitignore
 
-.PHONY: corrtest
+.PHONY: .depend corrtest
 
-depend: .depend
-
-.depend: $(QUERIES)
+.depend:
 	@echo "[Create/update dependencies]"
-	@rm -f ./.depend
 	@sh $(SRD)/mkdep.sh >./.depend
 
 clean:

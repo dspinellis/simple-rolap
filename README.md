@@ -35,8 +35,8 @@ You can cite this work as follows.
 
 Georgios Gousios and Diomidis Spinellis. Mining software engineering data from GitHub. In *Proceedings of the 39th International Conference on Software Engineering Companion, ICSE-C '17*, pages 501–502, Piscataway, NJ, USA, May 2017. IEEE Press. Technical Briefing. [doi:10.1109/ICSE-C.2017.164](https://dx.doi.org/10.1109%2FICSE-C.2017.164)
 
-## Installation
-The *simple-rolap* scripts are used by including the provided *Makefile*.
+## Global installation
+The *simple-rolap* scripts are used by including the provided `Makefile`.
 Consequently, all that is needed is to provide the repository in suitably
 accessible location.
 Here is an example.
@@ -45,12 +45,16 @@ cd /usr/local/lib
 sudo git clone --depth=1 https://github.com/dspinellis/simple-rolap.git
 ```
 
+Alternatively, you can perform a local install by adding two lines in
+the project's `Makefile`. (See below.)
+
 The system where *simple-rolap* is run must have and installation of the
 database being used, *GNU make*, *GNU sed*,
 and (if you want to visualize the associated dependency graphs)
 [GraphViz](http://graphviz.org/).
 
 ## Use
+
 To start using *simple-rolap*, create a `Makefile` that
 a) specifies the project's configuration by defining a few variables,
 and b) includes the *simple-rolap* `Makefile`.
@@ -64,6 +68,15 @@ export MAINDB?=rxjs-ghtorrent
 export ROLAPDB?=stratsel
 
 include /usr/local/src/simple-rolap/Makefile
+```
+
+To work with a local install of *simple-rolap* change the `Makefile`'s
+last line into the following.
+```Makefile
+include simple-rolap/Makefile
+
+simple-rolap/Makefile:
+        git clone git@github.com:dspinellis/simple-rolap
 ```
 
 If some actions need to be performed before running the queries,

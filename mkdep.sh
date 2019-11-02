@@ -31,7 +31,7 @@ need_var ROLAPDB
 for i in *.sql ; do
 
   # Issue error if dependencies can't be tracked
-  if grep -i '/^.*(from|join)[ \t]' "$i" ; then
+  if egrep -iHn '^.*\<(from|join)[ \t]*$' "$i" 1>&2 ; then
     echo 'No table specified after FROM or JOIN in the above statement(s)' 1>&2
     echo 'Dependencies cannot be correctly tracked' 1>&2
     exit 1

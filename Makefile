@@ -52,13 +52,25 @@ tables/%: %.sql $(ROLAPDB) $(DEPENDENCIES)
 	@mkdir -p tables
 	@sh $(SRD)/run_sql.sh $< >$@
 
-all: .depend $(TABLES_VIEWS) $(RESULTS)
+all: .depend .gitignore $(TABLES_VIEWS) $(RESULTS)
 
 $(ROLAPDB):
 	@echo "[Create database $(ROLAPDB)]"
 	@sh $(SRD)/create_db.sh
 	@touch $@
-	@echo $@ >>.gitignore
+
+.gitignore: $(ROLAPDB)
+	@echo "[Create / update .gitignore]"
+	@touch $@
+	@( cat $@ ; \
+	  echo .depend ; \
+	  echo reports ; \
+	  echo tables ; \
+	  echo simple-rolap ; \
+	  echo $(ROLAPDB) ; \
+	) | \
+	sort -u >$@.new
+	@mv $@.new $@
 
 .PHONY: .depend corrtest
 

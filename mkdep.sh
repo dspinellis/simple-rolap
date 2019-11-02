@@ -31,7 +31,7 @@ need_var ROLAPDB
 for i in *.sql ; do
 
   # Issue error if dependencies can't be tracked
-  if egrep -iHn '^.*\<(from|join)[ \t]*$' "$i" 1>&2 ; then
+  if egrep -iHn '^.*\<(from|join)[[:space:]]*$' "$i" 1>&2 ; then
     echo 'No table specified after FROM or JOIN in the above statement(s)' 1>&2
     echo 'Dependencies cannot be correctly tracked' 1>&2
     exit 1
@@ -57,6 +57,6 @@ for i in *.sql ; do
   fi
 
   # Output dependencies
-  sed -rn "/^delete/IQ;s/^.*(from|join)[ \t]*$ROLAPDB\.([a-zA-Z][-_a-zA-Z0-9]*).*\$/$target: tables\/\2/ip" "$i"
+  sed -rn "/^delete/IQ;s/^.*(from|join)[[:space:]]*$ROLAPDB\.([a-zA-Z][-_a-zA-Z0-9]*).*\$/$target: tables\/\2/ip" "$i"
 done |
 sort -u

@@ -57,6 +57,23 @@ for i in *.sql ; do
   fi
 
   # Output dependencies
-  sed -rn "/^delete/IQ;s/^.*(from|join)[[:space:]]*$ROLAPDB\.([a-zA-Z][-_a-zA-Z0-9]*).*\$/$target: tables\/\2/ip" "$i"
+  # Dependency pattern to search and replace
+  SEARCH="^(.*)\<(from|join)[[:space:]]*$ROLAPDB\.([a-zA-Z][-_a-zA-Z0-9]*)(.)*"
+  sed -rn "
+/^delete/IQ
+
+:retry
+/$SEARCH/I {
+  h		# Save pattern in hold space
+  # Create dependency
+  s/$SEARCH/$target: tables\/\3/I
+  p		# Print dependency
+  g		# Get back pattern space
+  # Remove dependency
+  s/$SEARCH/\1 \4/I
+  b retry	# Try for another dependency
+}
+" "$i"
+
 done |
 sort -u

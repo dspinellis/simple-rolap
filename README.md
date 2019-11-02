@@ -76,7 +76,7 @@ last line into the following.
 include simple-rolap/Makefile
 
 simple-rolap/Makefile:
-        git clone git@github.com:dspinellis/simple-rolap
+        git clone https://github.com/dspinellis/simple-rolap
 ```
 
 If some actions need to be performed before running the queries,

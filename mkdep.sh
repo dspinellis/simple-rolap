@@ -44,15 +44,17 @@ for i in *.sql ; do
     target="tables\\/$base"
 
     # Freshen target file's date if the table already exists
-    case $RDBMS in
-      mysql)
-	need_var DBUSER
-	T=$(echo "SELECT create_time FROM INFORMATION_SCHEMA.TABLES where table_schema = '$ROLAPDB' AND table_name = '$base'" | mysql -N -u $DBUSER $ROLAPDB)
-	;;
-    esac
-    if [ -n "$T" ] ; then
-      mkdir -p tables
-      touch -d "$T" "tables/$base"
+    if [ -z "$SKIP_TIMESTAMPING" ] ; then
+      case $RDBMS in
+	mysql)
+	  need_var DBUSER
+	  T=$(echo "SELECT create_time FROM INFORMATION_SCHEMA.TABLES where table_schema = '$ROLAPDB' AND table_name = '$base'" | mysql -N -u $DBUSER $ROLAPDB)
+	  ;;
+      esac
+      if [ -n "$T" ] ; then
+	mkdir -p tables
+	touch -d "$T" "tables/$base"
+      fi
     fi
   fi
 

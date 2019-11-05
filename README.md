@@ -19,6 +19,11 @@ the table creation times in the `tables` folder.
 This allows multiple users to work together with separate instances
 of a `simple-rolap` repository, without requiring the recalculation
 of expensive tables.
+When the database's information schema is locked (e.g. due to the creation
+of new indices) this part of the dependency generation step can block
+until the (potentially long) operation finishes.
+To avoid this, set the `SKIP_TIMESTAMPING` environment variable,
+for example by running `make SKIP_TIMESTAMPING=1`.
 
 The provided functionality is mainly useful in cases where *materialized views*
 are unsupported or unusable.

@@ -28,6 +28,11 @@
 need_var RDBMS
 need_var ROLAPDB
 
+# Do not attempt to run if database hasn't been created
+if ! [ -r $ROLAPDB ] ; then
+  exit
+fi
+
 for i in *.sql ; do
 
   # Issue error if dependencies can't be tracked

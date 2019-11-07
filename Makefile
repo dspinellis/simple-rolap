@@ -22,6 +22,7 @@
 export RDBMS?=sqlite
 export MAINDB?=rxjs-ghtorrent
 export ROLAPDB?=driveby
+export DBHOST=127.0.0.1
 
 #export RDBMS?=mysql
 #export DBUSER?=ghtorrent

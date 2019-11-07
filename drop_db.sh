@@ -29,7 +29,7 @@ case $RDBMS in
     (
       echo "drop database if exists $ROLAPDB;" ;
     ) |
-    mysql -u root -p
+    mysql -h $DBHOST -u root -p
     ;;
   sqlite)
     need_var MAINDB

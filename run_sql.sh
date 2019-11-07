@@ -38,9 +38,9 @@ case $RDBMS in
       echo "commit;"
     } |
     if [ -n "$DBPASSWD" ] ; then
-      mysql --quick --local-infile -u "$DBUSER" -p"$DBPASSWD" $MAINDB
+      mysql -h $DBHOST --quick --local-infile -u "$DBUSER" -p"$DBPASSWD" $MAINDB
     else
-      mysql --quick --local-infile -u "$DBUSER" $MAINDB
+      mysql -h $DBHOST --quick --local-infile -u "$DBUSER" $MAINDB
     fi
     ;;
   sqlite)

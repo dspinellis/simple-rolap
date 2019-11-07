@@ -27,14 +27,14 @@ case $RDBMS in
     need_var ROLAPDB
     need_var DBUSER
     # Exit if database already exists
-    echo quit | mysql -u $DBUSER $ROLAPDB 2>/dev/null && exit
+    echo quit | mysql -h $DBHOST -u $DBUSER $ROLAPDB 2>/dev/null && exit
     echo '[Enter database administrator password for user root]'
     (
       echo "create database $ROLAPDB;" ;
       echo "GRANT ALL PRIVILEGES ON $ROLAPDB.* to $DBUSER@'localhost';" ;
       echo 'flush privileges;'
     ) |
-    mysql -u root -p
+    mysql -h $DBHOST -u root -p
     ;;
   sqlite)
     ;;

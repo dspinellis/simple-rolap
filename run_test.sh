@@ -21,7 +21,7 @@ set -e
 
 case $RDBMS in
   mysql)
-    rdbunit --database=mysql *.rdbu | mysql -u root -p$DBPASS -N
+    rdbunit --database=mysql *.rdbu | mysql -h $DBHOST -u root -p$DBPASS -N
     ;;
   sqlite)
     # Exit rdbunit each time to ensure it runs with a clean slate

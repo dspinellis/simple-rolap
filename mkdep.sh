@@ -53,7 +53,7 @@ for i in *.sql ; do
       case $RDBMS in
 	mysql)
 	  need_var DBUSER
-	  T=$(echo "SELECT create_time FROM INFORMATION_SCHEMA.TABLES where table_schema = '$ROLAPDB' AND table_name = '$base'" | mysql -N -u $DBUSER $ROLAPDB)
+	  T=$(echo "SELECT create_time FROM INFORMATION_SCHEMA.TABLES where table_schema = '$ROLAPDB' AND table_name = '$base'" | mysql -h $DBHOST -N -u $DBUSER $ROLAPDB)
 	  ;;
       esac
       if [ -n "$T" ] ; then

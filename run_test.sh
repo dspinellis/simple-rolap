@@ -17,11 +17,21 @@
 # limitations under the License.
 #
 
+. $ROLAP_DIR/need_var.sh
+
 set -e
 
 case $RDBMS in
   mysql)
+    need_var DBHOST
     rdbunit --database=mysql *.rdbu | mysql -h $DBHOST -u root -N
+    ;;
+  postgresql)
+    need_var DBHOST
+    need_var DBUSER
+    need_var MAINDB
+    rdbunit --database=postgresql *.rdbu |
+      psql -h $DBHOST -U $DBUSER -t -q $MAINDB
     ;;
   sqlite)
     # Exit rdbunit each time to ensure it runs with a clean slate

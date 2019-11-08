@@ -53,7 +53,12 @@ for i in *.sql ; do
       case $RDBMS in
 	mysql)
 	  need_var DBUSER
-	  T=$(echo "SELECT create_time FROM INFORMATION_SCHEMA.TABLES where table_schema = '$ROLAPDB' AND table_name = '$base'" | mysql -h $DBHOST -N -u $DBUSER $ROLAPDB)
+	  T=$(echo "SELECT create_time FROM INFORMATION_SCHEMA.TABLES where table_schema = '$ROLAPDB' AND table_name = '$base'" |
+	  mysql -h $DBHOST -N -u $DBUSER $ROLAPDB)
+	  ;;
+	postgresql)
+	  T=$(echo "SELECT creation_date FROM t_create_history  where schema_name = '$ROLAPDB' AND object_identity = '$base'" |
+	  psql -h $DBHOST -U $DBUSER -t -q $MAINDB)
 	  ;;
       esac
       if [ -n "$T" ] ; then

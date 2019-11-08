@@ -26,10 +26,18 @@ case $RDBMS in
   mysql)
     need_var ROLAPDB
     echo '[Enter database administrator password for user root]'
-    (
-      echo "drop database if exists $ROLAPDB;" ;
-    ) |
+    echo "drop database if exists $ROLAPDB;" |
     mysql -h $DBHOST -u root -p
+    ;;
+  postgresql)
+    need_var MAINDB
+    need_var ROLAPDB
+    need_var DBUSER
+    {
+      echo "SET client_min_messages='ERROR';"
+      echo "drop schema if exists $ROLAPDB cascade;"
+    } |
+    psql -q -h $DBHOST -U $DBUSER $MAINDB
     ;;
   sqlite)
     need_var MAINDB

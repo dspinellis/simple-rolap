@@ -36,6 +36,20 @@ case $RDBMS in
     ) |
     mysql -h $DBHOST -u root -p
     ;;
+  postgresql)
+    # Create a schema, rather than a database
+    need_var ROLAPDB
+    need_var DBUSER
+    {
+      echo "SET client_min_messages='ERROR';"
+      echo "create schema if not exists $ROLAPDB;" 
+    } |
+    psql -q -v 'ON_ERROR_STOP=1' -h $DBHOST -U $DBUSER $MAINDB
+    # Exit if creation time functionality already exists
+    psql -v 'ON_ERROR_STOP=1' -h $DBHOST -U $DBUSER -c 'select count (*) from t_create_history;' $MAINDB >/dev/null 2>&1 && exit
+    # Setup table creation time functionality
+    psql -q -v 'ON_ERROR_STOP=1' -h $DBHOST -U $DBUSER $MAINDB <$ROLAP_DIR/psql-ctime.sql
+    ;;
   sqlite)
     ;;
   *)

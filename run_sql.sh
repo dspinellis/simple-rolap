@@ -32,12 +32,26 @@ need_var MAINDB
 case $RDBMS in
   mysql)
     need_var DBUSER
+    need_var DBHOST
+    need_var MAINDB
     {
       echo -n 'set autocommit=0; '
       add_drop_table "$1"
       echo "commit;"
     } |
     mysql -h $DBHOST --quick --local-infile -u "$DBUSER" $MAINDB
+    ;;
+  postgresql)
+    need_var DBUSER
+    need_var DBHOST
+    need_var MAINDB
+    {
+      echo "SET client_min_messages='ERROR';"
+      echo 'begin; '
+      add_drop_table "$1"
+      echo "commit;"
+    } |
+    psql -v 'ON_ERROR_STOP=1' -h $DBHOST -U $DBUSER $MAINDB
     ;;
   sqlite)
     need_var ROLAPDB

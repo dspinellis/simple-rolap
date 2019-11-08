@@ -146,6 +146,10 @@ When *make* is run on such a module, the results of the query will
 appear in the directory `reports` in a file named after the module's name
 with the suffix `.sql` replaced by `.txt`.
 
+To authenticate yourself with the main database, setup suitable
+environment variables (e.g. `PGPASSWORD`) or files (e.g. `.my.cnf`
+or `.pgpass`).
+
 ## Goodies
 Here are some more things that the provided `Makefile` allows you to do.
 

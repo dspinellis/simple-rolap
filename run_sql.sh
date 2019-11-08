@@ -37,11 +37,7 @@ case $RDBMS in
       add_drop_table "$1"
       echo "commit;"
     } |
-    if [ -n "$DBPASSWD" ] ; then
-      mysql -h $DBHOST --quick --local-infile -u "$DBUSER" -p"$DBPASSWD" $MAINDB
-    else
-      mysql -h $DBHOST --quick --local-infile -u "$DBUSER" $MAINDB
-    fi
+    mysql -h $DBHOST --quick --local-infile -u "$DBUSER" $MAINDB
     ;;
   sqlite)
     need_var ROLAPDB

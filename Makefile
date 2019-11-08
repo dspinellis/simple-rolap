@@ -26,7 +26,6 @@ export DBHOST=127.0.0.1
 
 #export RDBMS?=mysql
 #export DBUSER?=ghtorrent
-#export DBPASSWD?=ghtorrent
 #export MAINDB?=ghtorrent2
 #export ROLAPDB?=driveby
 

@@ -32,9 +32,24 @@ DECLARE
 BEGIN
     FOR obj IN SELECT * FROM pg_event_trigger_ddl_commands  () WHERE command_tag in ('SELECT INTO','CREATE TABLE','CREATE TABLE AS')
     LOOP
-        INSERT INTO public.t_create_history (object_type, schema_name, object_identity, creation_date) SELECT obj.object_type, obj.schema_name, obj.object_identity, now();
+        UPDATE public.t_create_history SET creation_date = now()
+	WHERE
+	  object_type = obj.object_type AND
+	  schema_name = obj.schema_name AND
+	  object_identity = obj.object_identity;
+	IF NOT found THEN
+          INSERT INTO public.t_create_history (object_type, schema_name, object_identity, creation_date) SELECT obj.object_type, obj.schema_name, obj.object_identity, now();
+	END IF;
     END LOOP;
 
+    FOR obj IN SELECT * FROM pg_event_trigger_ddl_commands  () WHERE command_tag = 'DROP TABLE'
+    LOOP
+        DELETE FROM public.t_create_history
+	WHERE
+	  object_type = obj.object_type AND
+	  schema_name = obj.schema_name AND
+	  object_identity = obj.object_identity;
+    END LOOP;
 END;
 $$;
 

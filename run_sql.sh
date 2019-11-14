@@ -29,6 +29,8 @@ add_drop_table()
 need_var RDBMS
 need_var MAINDB
 
+TAB=$(printf '\t')
+
 case $RDBMS in
   mysql)
     need_var DBUSER
@@ -51,7 +53,7 @@ case $RDBMS in
       add_drop_table "$1"
       echo "commit;"
     } |
-    psql -v 'ON_ERROR_STOP=1' -h $DBHOST -U $DBUSER $MAINDB
+    psql -q -t -F "$TAB" -P footer -A -v 'ON_ERROR_STOP=1' -h $DBHOST -U $DBUSER $MAINDB
     ;;
   sqlite)
     need_var ROLAPDB

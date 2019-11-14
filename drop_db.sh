@@ -35,6 +35,7 @@ case $RDBMS in
     need_var DBUSER
     {
       echo "SET client_min_messages='ERROR';"
+      echo "delete from t_create_history where schema_name = '$ROLAPDB';"
       echo "drop schema if exists $ROLAPDB cascade;"
     } |
     psql -q -h $DBHOST -U $DBUSER $MAINDB

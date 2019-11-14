@@ -3,7 +3,7 @@ export MAINDB?=rxjs-ghtorrent
 export ROLAPDB?=stratsel
 export DEPENDENCIES=rxjs-ghtorrent.db
 
-include ../../Makefile
+include ../../../Makefile
 
 rxjs-ghtorrent.db:
 	wget https://github.com/ghtorrent/tutorial/raw/master/rxjs-ghtorrent.db

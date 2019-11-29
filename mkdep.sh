@@ -57,7 +57,7 @@ for i in *.sql ; do
 	  mysql -h $DBHOST -N -u $DBUSER $ROLAPDB)
 	  ;;
 	postgresql)
-	  T=$(echo "SELECT MAX(creation_date) FROM t_create_history where schema_name = '$ROLAPDB' AND object_identity = '$ROLAPDB.$base' |
+	  T=$(echo "SELECT MAX(creation_date) FROM t_create_history where schema_name = '$ROLAPDB' AND object_identity = '$ROLAPDB.$base'" |
 	  psql -h $DBHOST -U $DBUSER -t -q $MAINDB |
           sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 	  ;;

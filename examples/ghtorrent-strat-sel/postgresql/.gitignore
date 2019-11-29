@@ -1,0 +1,9 @@
+.depend
+stratsel
+stratsel.db
+rxjs-ghtorrent.db
+tables
+graph.*
+clones
+data
+reports

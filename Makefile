@@ -44,25 +44,25 @@ RESULTS=$(shell grep -li '^select' *.sql | sed 's/\(.*\)\.sql/reports\/\1.txt/')
 
 reports/%.txt: %.sql $(ROLAPDB) $(DEPENDENCIES)
 	@echo "[Create report from $<]"
-	@mkdir -p reports
-	@sh $(SRD)/run_sql.sh $< >$@
+	mkdir -p reports
+	sh $(SRD)/run_sql.sh $< >$@
 
 tables/%: %.sql $(ROLAPDB) $(DEPENDENCIES)
 	@echo "[Create table from $<]"
-	@mkdir -p tables
-	@sh $(SRD)/run_sql.sh $< >$@
+	mkdir -p tables
+	sh $(SRD)/run_sql.sh $< >$@
 
 all: .depend .gitignore $(TABLES_VIEWS) $(RESULTS)
 
 $(ROLAPDB):
 	@echo "[Create database $(ROLAPDB)]"
-	@sh $(SRD)/create_db.sh
-	@touch $@
+	sh $(SRD)/create_db.sh
+	touch $@
 
 .gitignore: $(ROLAPDB)
 	@echo "[Create / update .gitignore]"
-	@touch $@
-	@( cat $@ ; \
+	touch $@
+	( cat $@ ; \
 	  echo .depend ; \
 	  echo reports ; \
 	  echo tables ; \
@@ -70,18 +70,18 @@ $(ROLAPDB):
 	  echo $(ROLAPDB) ; \
 	) | \
 	sort -u >$@.new
-	@mv $@.new $@
+	mv $@.new $@
 
 .PHONY: .depend corrtest
 
-.depend:
+.depend: $(ROLAPDB) $(wildcard *.sql)
 	@echo "[Create/update dependencies]"
-	@sh $(SRD)/mkdep.sh >./.depend
+	sh $(SRD)/mkdep.sh >$@
 
 clean:
 	@echo '[Remove tables, reports; drop database $(ROLAPDB)]'
-	@rm -rf reports tables .depend $(ROLAPDB)
-	@sh $(SRD)/drop_db.sh
+	rm -rf reports tables .depend $(ROLAPDB)
+	sh $(SRD)/drop_db.sh
 
 graph.dot: .depend
 	$(SRD)/dep2dot.sed $< >$@
@@ -105,3 +105,7 @@ tags: $(QUERIES)
 ifneq ("$(wildcard .depend)","")
 include .depend
 endif
+
+# With V=1 disable silent operation
+# http://make.mad-scientist.net/managing-recipe-echoing/
+$(V).SILENT:

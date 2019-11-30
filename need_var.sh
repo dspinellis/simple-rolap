@@ -15,6 +15,8 @@
 # limitations under the License.
 #
 
+test "$V" = 2 && set -x
+
 # Exit with an error if the specified environment variable isn't set
 need_var()
 {

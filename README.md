@@ -163,7 +163,8 @@ start a new analysis from scratch.
 to automatically navigate between the queries.
 * Run `make sorted-dependencies` to create a file named `sorted-dependencies`
 with the queries listed in the order determined by their dependencies.
-* Run `make V=1` to see the executed commands.
+* Run `make V=1` to see the commands executed within the Makefile.
+* Run `make V=2` to also see the commands executed within the shell scripts.
 
 ## See also
 * [RDBUnit: Unit testing for relational database queries](https://github.com/dspinellis/rdbunit)

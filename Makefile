@@ -72,7 +72,7 @@ $(ROLAPDB):
 	sort -u >$@.new
 	mv $@.new $@
 
-.PHONY: .depend corrtest
+.PHONY: corrtest
 
 .depend: $(ROLAPDB) $(wildcard *.sql)
 	@echo "[Create/update dependencies]"
@@ -101,10 +101,8 @@ test:
 tags: $(QUERIES)
 	sh mktags.sh $(QUERIES)
 
-# Include dependencies if they exist
-ifneq ("$(wildcard .depend)","")
-include .depend
-endif
+# Include dependencies; no error if they don't exist
+-include .depend
 
 # With V=1 disable silent operation
 # http://make.mad-scientist.net/managing-recipe-echoing/

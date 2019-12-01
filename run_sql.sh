@@ -24,6 +24,14 @@ add_drop_table()
   sed 's/^\(.*create  *table  *\([^ (]*\).*\)/drop table if exists \2; \1/i' "$1"
 }
 
+# Add any configuration statements from the .config.sql file
+add_config()
+{
+  if [ -r .config.sql ] ; then
+    tr '\n' ' ' <.config.sql
+  fi
+}
+
 . $ROLAP_DIR/need_var.sh
 
 need_var RDBMS
@@ -38,6 +46,7 @@ case $RDBMS in
     need_var MAINDB
     {
       echo -n 'set autocommit=0; '
+      add_config
       add_drop_table "$1"
       echo "commit;"
     } |
@@ -50,6 +59,7 @@ case $RDBMS in
     {
       echo -n "SET client_min_messages='ERROR';"
       echo -n 'begin; '
+      add_config
       add_drop_table "$1"
       echo "commit;"
     } |
@@ -59,6 +69,7 @@ case $RDBMS in
     need_var ROLAPDB
     {
       echo -n "ATTACH DATABASE '$ROLAPDB.db' AS $ROLAPDB; "
+      add_config
       add_drop_table "$1"
     } |
     sqlite3 $MAINDB.db

@@ -165,6 +165,8 @@ to automatically navigate between the queries.
 with the queries listed in the order determined by their dependencies.
 * Run `make V=1` to see the commands executed within the Makefile.
 * Run `make V=2` to also see the commands executed within the shell scripts.
+* Put SQL statements that you want to precede each query (e.g. *MySQL*
+  optimizer tuning `SET` commands), in the file `.config.sql`.
 
 ## See also
 * [RDBUnit: Unit testing for relational database queries](https://github.com/dspinellis/rdbunit)

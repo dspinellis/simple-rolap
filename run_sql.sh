@@ -48,8 +48,8 @@ case $RDBMS in
     need_var DBHOST
     need_var MAINDB
     {
-      echo "SET client_min_messages='ERROR';"
-      echo 'begin; '
+      echo -n "SET client_min_messages='ERROR';"
+      echo -n 'begin; '
       add_drop_table "$1"
       echo "commit;"
     } |

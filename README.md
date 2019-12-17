@@ -159,6 +159,9 @@ queries' dependencies.
 unit tests you may have written.
 * Run `make clean` to remove all auto-generated files, so that you can
 start a new analysis from scratch.
+* Run `make sync-timestamps` to update the timestamps of unmodified files
+to match those of the committed files.  In collaborative development settings
+this will avoid rerunning queries that have already been executed by others.
 * Run `make tags` to create a `tags` file that many editors can use
 to automatically navigate between the queries.
 * Run `make sorted-dependencies` to create a file named `sorted-dependencies`

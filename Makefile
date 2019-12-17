@@ -101,6 +101,9 @@ test:
 tags: $(QUERIES)
 	sh mktags.sh $(QUERIES)
 
+sync-timestamps:
+	$(SRD)/sync_timestamps.sh
+
 # Include dependencies; no error if they don't exist
 -include .depend
 

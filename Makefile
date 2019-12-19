@@ -52,7 +52,7 @@ tables/%: %.sql $(ROLAPDB) $(DEPENDENCIES)
 	mkdir -p tables
 	$(SRD)/run_sql.sh $< >$@
 
-all: .depend .gitignore $(TABLES_VIEWS) $(RESULTS)
+all: .depend .gitignore $(TABLES_VIEWS) $(RESULTS) # Help: Run all queries and reports
 
 $(ROLAPDB):
 	@echo "[Create database $(ROLAPDB)]"
@@ -78,31 +78,35 @@ $(ROLAPDB):
 	@echo "[Create/update dependencies]"
 	$(SRD)/mkdep.sh >$@
 
-clean:
+clean:	# Help: Drop database and remove generated files
 	@echo '[Remove tables, reports; drop database $(ROLAPDB)]'
 	rm -rf reports tables .depend $(ROLAPDB)
 	$(SRD)/drop_db.sh
 
-graph.dot: .depend
+graph.dot: .depend	# Help: Create GraphViz dot file with dependencies
 	$(SRD)/dep2dot.sed $< >$@
 
-sorted-dependencies: .depend
+sorted-dependencies: .depend	# Help: Create text file with dependencies
 	$(SRD)/dep2tsort.sed $< | tsort >$@
 
-graph.pdf: graph.dot
+graph.pdf: graph.dot	# Help: Create PDF chart with dependencies
 	dot -Tpdf $< -o $@
 
-graph.png: graph.dot
+graph.png: graph.dot	# Help: Create PNG chart with dependencies
 	dot -Tpng $< -o $@
 
-test:
+test:	# Help: Run RDBUnit tests
 	$(SRD)/run_test.sh
 
-tags: $(QUERIES)
+tags: $(QUERIES)	# Help: Create tags file
 	$(SRD)/mktags.sh $(QUERIES)
 
-sync-timestamps:
+sync-timestamps:	# Help: Synchronize query timestamps to their commit time
 	$(SRD)/sync_timestamps.sh
+
+help: # Help: Show this help message
+	@echo 'The following make targets are available.'
+	@sed -n 's/^\([^:]*:\).*# [H]elp: \(.*\)/printf "%-20s %s\\n" "\1" "\2"/p' $(SRD)/Makefile | sh | sort
 
 # Include dependencies; no error if they don't exist
 -include .depend

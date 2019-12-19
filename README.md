@@ -153,6 +153,7 @@ or `.pgpass`).
 ## Goodies
 Here are some more things that the provided `Makefile` allows you to do.
 
+* Run `make help` to obtain a list of available targets.
 * Run `make graph.png` or `make graph.pdf` to generate a diagram of the
 queries' dependencies.
 * Run `make test` to run any [RDBUnit](https://github.com/dspinellis/rdbunit)

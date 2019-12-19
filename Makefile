@@ -99,7 +99,7 @@ test:
 	$(SRD)/run_test.sh
 
 tags: $(QUERIES)
-	sh mktags.sh $(QUERIES)
+	$(SRD)/mktags.sh $(QUERIES)
 
 sync-timestamps:
 	$(SRD)/sync_timestamps.sh

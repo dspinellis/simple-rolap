@@ -53,6 +53,7 @@ tables/%: %.sql $(ROLAPDB) $(DEPENDENCIES)
 	$(SRD)/run_sql.sh $< >$@
 
 all: .depend .gitignore $(TABLES_VIEWS) $(RESULTS) # Help: Run all queries and reports
+	@echo '[All tables and reports are up to date]'
 
 $(ROLAPDB):
 	@echo "[Create database $(ROLAPDB)]"

@@ -21,22 +21,27 @@
 
 set -e
 
+# Temporary file that will be deleted on exit
+trap 'rm -f "$tmpfile"' 0
+trap 'exit 2' 1 2 15
+tmpfile=$(mktemp /tmp/run-test.XXXXXX)
+
 case $RDBMS in
   mysql)
     need_var DBHOST
-    rdbunit --database=mysql *.rdbu | mysql -h $DBHOST -u root -N
+    rdbunit --database=mysql *.rdbu | mysql -h $DBHOST -u root -N >$tmpfile
     ;;
   postgresql)
     need_var DBHOST
     need_var DBUSER
     need_var MAINDB
     rdbunit --database=postgresql *.rdbu |
-      psql -h $DBHOST -U $DBUSER -t -q $MAINDB
+      psql -h $DBHOST -U $DBUSER -t -q $MAINDB >$tmpfile
     ;;
   sqlite)
     # Exit rdbunit each time to ensure it runs with a clean slate
     for i in *.rdbu ; do
-      rdbunit --database=sqlite $i | sqlite3
+      rdbunit --database=sqlite $i | sqlite3 >$tmpfile
     done
     ;;
   *)
@@ -44,3 +49,14 @@ case $RDBMS in
     exit 1
     ;;
 esac
+
+# If we reach this point the database command finished without an error
+# Verify the file's contents
+grep -v '^$' $tmpfile
+if egrep -v -e '^ *ok [0-9]' -e '^ *[0-9]+\.\.[0-9]+.?$' -e '^ *$' $tmpfile >/dev/null; then
+  echo 'A test failed or produced extraneous output' 1>&2
+  exit 1
+else
+  echo 'All tests succeeded' 1>&2
+  exit 0
+fi

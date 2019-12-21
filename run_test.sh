@@ -26,21 +26,23 @@ trap 'rm -f "$tmpfile"' 0
 trap 'exit 2' 1 2 15
 tmpfile=$(mktemp /tmp/run-test.XXXXXX)
 
+UNIT=${UNIT:-*.rdbu}
+
 case $RDBMS in
   mysql)
     need_var DBHOST
-    rdbunit --database=mysql *.rdbu | mysql -h $DBHOST -u root -N >$tmpfile
+    rdbunit --database=mysql $UNIT | mysql -h $DBHOST -u root -N >$tmpfile
     ;;
   postgresql)
     need_var DBHOST
     need_var DBUSER
     need_var MAINDB
-    rdbunit --database=postgresql *.rdbu |
+    rdbunit --database=postgresql $UNIT |
       psql -h $DBHOST -U $DBUSER -t -q $MAINDB >$tmpfile
     ;;
   sqlite)
     # Exit rdbunit each time to ensure it runs with a clean slate
-    for i in *.rdbu ; do
+    for i in $UNIT ; do
       rdbunit --database=sqlite $i | sqlite3 >$tmpfile
     done
     ;;

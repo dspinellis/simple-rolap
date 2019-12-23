@@ -27,22 +27,24 @@ trap 'exit 2' 1 2 15
 db_out=$(mktemp /tmp/run-test-db_out.XXXXXX)
 rdbu_err=$(mktemp /tmp/run-test-rdbu_err.XXXXXX)
 
+UNIT=${UNIT:-*.rdbu}
+
 case $RDBMS in
   mysql)
     need_var DBHOST
-    rdbunit --database=mysql *.rdbu 2>$rdbu_err |
+    rdbunit --database=mysql $UNIT 2>$rdbu_err |
       mysql -h $DBHOST -u root -N >$db_out
     ;;
   postgresql)
     need_var DBHOST
     need_var DBUSER
     need_var MAINDB
-    rdbunit --database=postgresql *.rdbu 2>$rdbu_err |
+    rdbunit --database=postgresql $UNIT 2>$rdbu_err |
       psql -h $DBHOST -U $DBUSER -t -q $MAINDB >$db_out
     ;;
   sqlite)
     # Exit rdbunit each time to ensure it runs with a clean slate
-    for i in *.rdbu ; do
+    for i in $UNIT ; do
       rdbunit --database=sqlite $i 2>$rdbu_err |
         sqlite3 >$db_out
     done

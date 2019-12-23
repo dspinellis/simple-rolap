@@ -97,6 +97,7 @@ graph.png: graph.dot	# Help: Create PNG chart with dependencies
 	dot -Tpng $< -o $@
 
 test:	# Help: Run RDBUnit tests
+# Help: Pass SCRIPT=script-name to execute only a single test script
 	$(SRD)/run_test.sh
 
 tags: $(QUERIES)	# Help: Create tags file
@@ -108,10 +109,15 @@ sync-timestamps:	# Help: Synchronize query timestamps to their commit time
 help: # Help: Show this help message
 	@echo 'The following make targets are available.'
 	@sed -n 's/^\([^:]*:\).*# [H]elp: \(.*\)/printf "%-20s %s\\n" "\1" "\2"/p' $(SRD)/Makefile | sh | sort
+	@echo
+	@echo 'You can modify the operation of make with the following assignments.'
+	@sed -n 's/^# [H]elp: \(.*\)/\1/p' $(SRD)/Makefile
 
 # Include dependencies; no error if they don't exist
 -include .depend
 
-# With V=1 disable silent operation
+# Help: Pass V=1 (verbose) to disable silent operation
 # http://make.mad-scientist.net/managing-recipe-echoing/
 $(V).SILENT:
+
+# Help: Pass V=2 to trace the underlying shell scripts

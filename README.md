@@ -157,7 +157,8 @@ Here are some more things that the provided `Makefile` allows you to do.
 * Run `make graph.png` or `make graph.pdf` to generate a diagram of the
 queries' dependencies.
 * Run `make test` to run any [RDBUnit](https://github.com/dspinellis/rdbunit)
-unit tests you may have written.
+unit tests you may have written. Pass `UNIT=`*unit-name* to execute
+only the specified unit test.
 * Run `make clean` to remove all auto-generated files, so that you can
 start a new analysis from scratch.
 * Run `make sync-timestamps` to update the timestamps of unmodified files

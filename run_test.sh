@@ -22,40 +22,49 @@
 set -e
 
 # Temporary file that will be deleted on exit
-trap 'rm -f "$tmpfile"' 0
+trap 'rm -f "$db_out" "$rdbu_err"' 0
 trap 'exit 2' 1 2 15
-tmpfile=$(mktemp /tmp/run-test.XXXXXX)
+db_out=$(mktemp /tmp/run-test-db_out.XXXXXX)
+rdbu_err=$(mktemp /tmp/run-test-rdbu_err.XXXXXX)
 
 case $RDBMS in
   mysql)
     need_var DBHOST
-    rdbunit --database=mysql *.rdbu | mysql -h $DBHOST -u root -N >$tmpfile
+    rdbunit --database=mysql *.rdbu 2>$rdbu_err |
+      mysql -h $DBHOST -u root -N >$db_out
     ;;
   postgresql)
     need_var DBHOST
     need_var DBUSER
     need_var MAINDB
-    rdbunit --database=postgresql *.rdbu |
-      psql -h $DBHOST -U $DBUSER -t -q $MAINDB >$tmpfile
+    rdbunit --database=postgresql *.rdbu 2>$rdbu_err |
+      psql -h $DBHOST -U $DBUSER -t -q $MAINDB >$db_out
     ;;
   sqlite)
     # Exit rdbunit each time to ensure it runs with a clean slate
     for i in *.rdbu ; do
-      rdbunit --database=sqlite $i | sqlite3 >$tmpfile
+      rdbunit --database=sqlite $i 2>$rdbu_err |
+        sqlite3 >$db_out
     done
     ;;
   *)
     echo "Unknown or unset RDBMS: [$RDBMS]" 1>&2
-    exit 1
+    exit 2
     ;;
 esac
 
+if [ -s $rdbu_err ] ; then
+  echo 'Error in rdbu_unit specification' 1>&2
+  cat $rdbu_err 1>&2
+  exit 3
+fi
+
 # If we reach this point the database command finished without an error
 # Verify the file's contents
-grep -v '^$' $tmpfile
-if egrep -v -e '^ *ok [0-9]' -e '^ *[0-9]+\.\.[0-9]+.?$' -e '^ *$' $tmpfile >/dev/null; then
+grep -v '^$' $db_out
+if egrep -v -e '^ *ok [0-9]' -e '^ *[0-9]+\.\.[0-9]+.?$' -e '^ *$' $db_out >/dev/null; then
   echo 'A test failed or produced extraneous output' 1>&2
-  exit 1
+  exit 4
 else
   echo 'All tests succeeded' 1>&2
   exit 0

@@ -19,8 +19,6 @@
 
 . $ROLAP_DIR/need_var.sh
 
-set -e
-
 # Temporary file that will be deleted on exit
 trap 'rm -f "$db_out" "$rdbu_err"' 0
 trap 'exit 2' 1 2 15
@@ -29,45 +27,50 @@ rdbu_err=$(mktemp /tmp/run-test-rdbu_err.XXXXXX)
 
 UNIT=${UNIT:-*.rdbu}
 
-case $RDBMS in
-  mysql)
-    need_var DBHOST
-    rdbunit --database=mysql $UNIT 2>$rdbu_err |
-      mysql -h $DBHOST -u root -N >$db_out
-    ;;
-  postgresql)
-    need_var DBHOST
-    need_var DBUSER
-    need_var MAINDB
-    rdbunit --database=postgresql $UNIT 2>$rdbu_err |
-      psql -h $DBHOST -U $DBUSER -t -q $MAINDB >$db_out
-    ;;
-  sqlite)
-    # Exit rdbunit each time to ensure it runs with a clean slate
-    for i in $UNIT ; do
+# Exit rdbunit each time to ensure it runs with a clean slate
+for i in $UNIT ; do
+  case $RDBMS in
+    mysql)
+      need_var DBHOST
+      rdbunit --database=mysql $i 2>$rdbu_err |
+	mysql -h $DBHOST -u root -N >$db_out
+      ;;
+    postgresql)
+      need_var DBHOST
+      need_var DBUSER
+      need_var MAINDB
+      rdbunit --database=postgresql $i 2>$rdbu_err |
+	psql -h $DBHOST -U $DBUSER -t -q $MAINDB >$db_out
+      ;;
+    sqlite)
       rdbunit --database=sqlite $i 2>$rdbu_err |
-        sqlite3 >$db_out
-    done
-    ;;
-  *)
-    echo "Unknown or unset RDBMS: [$RDBMS]" 1>&2
+	sqlite3 >$db_out
+      ;;
+    *)
+      echo "Unknown or unset RDBMS: [$RDBMS]" 1>&2
+      exit 2
+      ;;
+  esac
+
+  if [ -s $rdbu_err ] ; then
+    echo "Error in rdbu_unit specification $i" 1>&2
+    cat $rdbu_err 1>&2
     exit 2
-    ;;
-esac
+  fi
 
-if [ -s $rdbu_err ] ; then
-  echo 'Error in rdbu_unit specification' 1>&2
-  cat $rdbu_err 1>&2
-  exit 3
-fi
+  if [ $? -ne 0 ] ; then
+    echo "Error in database execution for $i" 1>&2
+    exit 3
+  fi
 
-# If we reach this point the database command finished without an error
-# Verify the file's contents
-grep -v '^$' $db_out
-if egrep -v -e '^ *ok [0-9]' -e '^ *[0-9]+\.\.[0-9]+.?$' -e '^ *$' $db_out >/dev/null; then
-  echo 'A test failed or produced extraneous output' 1>&2
-  exit 4
-else
-  echo 'All tests succeeded' 1>&2
-  exit 0
-fi
+  # If we reach this point the database command finished without an error
+  # Verify the file's contents
+  grep -v '^$' $db_out
+  if egrep -v -e '^ *ok [0-9]' -e '^ *[0-9]+\.\.[0-9]+.?$' -e '^ *$' $db_out >/dev/null; then
+    echo "The test $i failed or produced extraneous output" 1>&2
+    exit 4
+  fi
+
+done
+
+echo 'All tests succeeded' 1>&2

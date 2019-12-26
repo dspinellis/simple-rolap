@@ -53,7 +53,7 @@ for i in *.sql ; do
       case $RDBMS in
 	mysql)
 	  need_var DBUSER
-	  T=$(echo "SELECT create_time FROM INFORMATION_SCHEMA.TABLES where table_schema = '$ROLAPDB' AND table_name = '$base'" |
+	  T=$(echo "SET time_zone='+00:00'; SELECT create_time FROM INFORMATION_SCHEMA.TABLES where table_schema = '$ROLAPDB' AND table_name = '$base'" |
 	  mysql -h $DBHOST -N -u $DBUSER $ROLAPDB)
 	  ;;
 	postgresql)
@@ -64,7 +64,7 @@ for i in *.sql ; do
       esac
       if [ -n "$T" ] ; then
 	mkdir -p tables
-	touch -d "$T" "tables/$base"
+	TZ=UTC touch -d "$T" "tables/$base"
       fi
     fi
   fi

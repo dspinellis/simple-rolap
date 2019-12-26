@@ -52,13 +52,15 @@ for i in $UNIT ; do
       ;;
   esac
 
+  db_exit=$?
+
   if [ -s $rdbu_err ] ; then
     echo "Error in rdbu_unit specification $i" 1>&2
     cat $rdbu_err 1>&2
     exit 2
   fi
 
-  if [ $? -ne 0 ] ; then
+  if [ $db_exit -ne 0 ] ; then
     echo "Error in database execution for $i" 1>&2
     exit 3
   fi

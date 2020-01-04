@@ -13,7 +13,8 @@ new queries can use already calculated results and that every
 time a query is changed all tables that depend on it (and only those)
 are automatically repopulated.
 
-When using the MySQL engine, the table population timestamps are
+When using the *MySQL* or the *PostgreSQL* engine,
+the table population timestamps are
 automatically propagated from the database to the files that track
 the table creation times in the `tables` folder.
 This allows multiple users to work together with separate instances
@@ -27,7 +28,7 @@ for example by running `make SKIP_TIMESTAMPING=1`.
 
 The provided functionality is mainly useful in cases where *materialized views*
 are unsupported or unusable.
-The scripts are written for *MySQL* and *SQLite*,
+The scripts are written for *MySQL*, *PostgreSQL*, and *SQLite*,
 but they should be easy to port to other relational database systems.
 
 For complex relational OLAP queries, *simple-rolap* can be combined particularly

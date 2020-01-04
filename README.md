@@ -92,6 +92,8 @@ Example:
 ```Makefile
 export DEPENDENCIES=rxjs-ghtorrent.db
 
+include simple-rolap/Makefile
+
 rxjs-ghtorrent.db:
 	wget https://github.com/ghtorrent/tutorial/raw/master/rxjs-ghtorrent.db
 ```
@@ -150,6 +152,21 @@ with the suffix `.sql` replaced by `.txt`.
 To authenticate yourself with the main database, setup suitable
 environment variables (e.g. `PGPASSWORD`) or files (e.g. `.my.cnf`
 or `.pgpass`).
+
+By default *simple-rolap* will run all SQL queries.
+If some additional actions need to be performed in addition
+to running the queries, you can specify them in a variable
+named `ALL` and then add corresponding rules.
+Example:
+```Makefile
+export ALL=popular.svg
+
+include simple-rolap/Makefile
+
+popular.svg: reports/popular.dot
+	dot -Tsvg $? >$@
+```
+
 
 ## Goodies
 Here are some more things that the provided `Makefile` allows you to do.

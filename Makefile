@@ -52,7 +52,7 @@ tables/%: %.sql $(ROLAPDB) $(DEPENDENCIES)
 	mkdir -p tables
 	$(SRD)/run_sql.sh $< >$@
 
-all: .depend .gitignore $(TABLES_VIEWS) $(RESULTS) # Help: Run all queries and reports
+all: .depend .gitignore $(TABLES_VIEWS) $(RESULTS) $(ALL) # Help: Run all queries and reports
 	@echo '[All tables and reports are up to date]'
 
 $(ROLAPDB):

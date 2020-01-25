@@ -74,7 +74,11 @@ for i in *.sql ; do
   SEARCH_ROLAPDB="^(.*)\<(from|join)[[:space:]]*$ROLAPDB\.([a-zA-Z][-_a-zA-Z0-9]*)(.*)"
   SEARCH_MAINDB="^(.*)\<(from|join)[[:space:]]*([a-zA-Z][-_a-zA-Z0-9]*)(.*)"
   sed -rn "
+# Ignore delete queries
 /^delete/IQ
+
+# Remove line comments
+s/--.*//
 
 :retry_rolap
 /$SEARCH_ROLAPDB/I {

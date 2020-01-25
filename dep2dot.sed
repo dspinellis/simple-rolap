@@ -18,14 +18,29 @@
 # limitations under the License.
 #
 
+# Graph header
 1i\
 digraph D {
+
+# Graph footer
 $a\
 }
+
+# Remove extension from the reports
 s/\.txt//
+
+# Space-separate dependencies
 s/^\([^:]*\): \(.*\)/\2 \1/
+
+# Tag tables and reports
 s/reports\//Report\\n/g
 s/tables\//Table\\n/g
+
+# Add opening quote
 s/^/\t"/
+
+# Add arrow
 s/ /" -> "/
+
+# Add closing quote
 s/$/";/

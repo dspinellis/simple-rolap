@@ -8,7 +8,7 @@
 # 2. set the timestamp of table-tracking files to the corresponding
 #    table's creation time.
 #
-# Copyright 2017-2019 Diomidis Spinellis
+# Copyright 2017-2020 Diomidis Spinellis
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -70,21 +70,33 @@ for i in *.sql ; do
   fi
 
   # Output dependencies
-  # Dependency pattern to search and replace
-  SEARCH="^(.*)\<(from|join)[[:space:]]*$ROLAPDB\.([a-zA-Z][-_a-zA-Z0-9]*)(.)*"
+  # Dependency patterns to search and replace
+  SEARCH_ROLAPDB="^(.*)\<(from|join)[[:space:]]*$ROLAPDB\.([a-zA-Z][-_a-zA-Z0-9]*)(.*)"
+  SEARCH_MAINDB="^(.*)\<(from|join)[[:space:]]*([a-zA-Z][-_a-zA-Z0-9]*)(.*)"
   sed -rn "
 /^delete/IQ
 
-:retry
-/$SEARCH/I {
+:retry_rolap
+/$SEARCH_ROLAPDB/I {
   h		# Save pattern in hold space
   # Create dependency
-  s/$SEARCH/$target: tables\/\3/I
+  s/$SEARCH_ROLAPDB/$target: tables\/\3/I
   p		# Print dependency
   g		# Get back pattern space
   # Remove dependency
-  s/$SEARCH/\1 \4/I
-  b retry	# Try for another dependency
+  s/$SEARCH_ROLAPDB/\1 \4/I
+  b retry_rolap	# Try for another dependency
+}
+:retry_main
+/$SEARCH_MAINDB/I {
+  h		# Save pattern in hold space
+  # Create dependency
+  s/$SEARCH_MAINDB/$target: maindb\/\3/I
+  p		# Print dependency
+  g		# Get back pattern space
+  # Remove dependency
+  s/$SEARCH_MAINDB/\1 \4/I
+  b retry_main	# Try for another dependency
 }
 " "$i"
 

@@ -3,7 +3,7 @@
 # Convert a list of table and report dependencies into a GraphViz dot(1)
 # diagram
 #
-# Copyright 2017 Diomidis Spinellis
+# Copyright 2017-2020 Diomidis Spinellis
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,7 +34,8 @@ s/^\([^:]*\): \(.*\)/\2 \1/
 
 # Tag tables and reports
 s/reports\//Report\\n/g
-s/tables\//Table\\n/g
+s/tables\//Derived\\STable\\n/g
+s/maindb\//Primary\\STable\\n/g
 
 # Add opening quote
 s/^/\t"/
@@ -44,3 +45,6 @@ s/ /" -> "/
 
 # Add closing quote
 s/$/";/
+
+# Unescape space
+s/\\S/ /g

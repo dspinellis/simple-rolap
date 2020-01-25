@@ -173,7 +173,8 @@ Here are some more things that the provided `Makefile` allows you to do.
 
 * Run `make help` to obtain a list of available targets.
 * Run `make graph.png` or `make graph.pdf` to generate a diagram of the
-queries' dependencies.
+ROLAP queries' dependencies.
+  Use `full-graph` rather than `graph` to include the main database tables.
 * Run `make test` to run any [RDBUnit](https://github.com/dspinellis/rdbunit)
 unit tests you may have written. Pass `UNIT=`*unit-name* to execute
 only the specified unit test.

@@ -2,7 +2,7 @@
 # Makefile to automate the relational online analytical processing of complex
 # queries
 #
-# Copyright 2017-2019 Diomidis Spinellis
+# Copyright 2017-2020 Diomidis Spinellis
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -75,19 +75,22 @@ $(ROLAPDB):
 
 .PHONY: corrtest
 
-.depend: $(ROLAPDB) $(wildcard *.sql)
+.depend .depend.all: $(ROLAPDB) $(wildcard *.sql)
 	@echo "[Create/update dependencies]"
-	$(SRD)/mkdep.sh >$@
+	$(SRD)/mkdep.sh | tee .depend.all | grep -v maindb/ >.depend
 
 clean:	# Help: Drop database and remove generated files
 	@echo '[Remove tables, reports; drop database $(ROLAPDB)]'
 	rm -rf reports tables .depend $(ROLAPDB)
 	$(SRD)/drop_db.sh
 
-graph.dot: .depend	# Help: Create GraphViz dot file with dependencies
+graph.dot: .depend	# Help: Create GraphViz file with ROLAP dependencies
 	$(SRD)/dep2dot.sed $< >$@
 
-sorted-dependencies: .depend	# Help: Create text file with dependencies
+full-graph.dot: .depend.all	# Help: Create GraphViz file with all dependencies
+	$(SRD)/dep2dot.sed $< >$@
+
+sorted-dependencies: .depend	# Help: Create text file with ROLAP dependencies
 	$(SRD)/dep2tsort.sed $< | tsort >$@
 
 graph.pdf: graph.dot	# Help: Create PDF chart with dependencies

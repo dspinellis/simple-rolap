@@ -77,7 +77,7 @@ $(ROLAPDB):
 
 .depend .depend.all: $(ROLAPDB) $(wildcard *.sql)
 	@echo "[Create/update dependencies]"
-	$(SRD)/mkdep.sh | tee .depend.all | grep -v maindb/ >.depend
+	-$(SRD)/mkdep.sh | tee .depend.all | grep -v maindb/ >.depend
 
 clean:	# Help: Drop database and remove generated files
 	@echo '[Remove tables, reports; drop database $(ROLAPDB)]'

@@ -197,3 +197,4 @@ with the queries listed in the order determined by their dependencies.
 * [Oracle: Materialized Views (ROLAP) and Cubes (MOLAP) comparison](http://gerardnico.com/wiki/database/oracle/pre_compute_operations)
 * [MySQL Flexviews](https://github.com/greenlion/swanhart-tools) Incrementally refreshable materialized views
 * [PostgreSQL Materialized views](https://wiki.postgresql.org/wiki/Materialized_Views)
+* [Boa Views: Easy Modularization and Sharing of MSR Analyses](https://www.cs.bgsu.edu/rdyer/papers/msr20.pdf)

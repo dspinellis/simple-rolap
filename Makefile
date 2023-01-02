@@ -45,12 +45,12 @@ RESULTS=$(shell grep -li '^select' *.sql | sed 's/\(.*\)\.sql/reports\/\1.txt/')
 reports/%.txt: %.sql $(ROLAPDB) $(DEPENDENCIES)
 	@echo "[Create report from $<]"
 	mkdir -p reports
-	$(SRD)/run_sql.sh $< >$@
+	$(TIME) $(SRD)/run_sql.sh $< >$@
 
 tables/%: %.sql $(ROLAPDB) $(DEPENDENCIES)
 	@echo "[Create table from $<]"
 	mkdir -p tables
-	$(SRD)/run_sql.sh $< >$@
+	$(TIME) $(SRD)/run_sql.sh $< >$@
 
 all: .depend .gitignore $(TABLES_VIEWS) $(RESULTS) $(ALL) # Help: Run all queries and reports
 	@echo '[All tables and reports are up to date]'
@@ -124,3 +124,4 @@ help: # Help: Show this help message
 $(V).SILENT:
 
 # Help: Pass V=2 to trace the underlying shell scripts
+# Help: Pass TIME=time to time the queries

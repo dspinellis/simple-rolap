@@ -188,6 +188,7 @@ to automatically navigate between the queries.
 * Run `make sorted-dependencies` to create a file named `sorted-dependencies`
 with the queries listed in the order determined by their dependencies.
 * Run `make V=1` to see the commands executed within the Makefile.
+* Run `make V=1 TIME=time` to see timing information of executions.
 * Run `make V=2` to also see the commands executed within the shell scripts.
 * Put SQL statements that you want to precede each query (e.g. *MySQL*
   optimizer tuning `SET` commands), in the file `.config.sql`.

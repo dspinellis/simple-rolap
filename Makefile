@@ -124,4 +124,5 @@ help: # Help: Show this help message
 $(V).SILENT:
 
 # Help: Pass V=2 to trace the underlying shell scripts
+# Help: Pass V=3 to see unit test output
 # Help: Pass TIME=time to time the queries

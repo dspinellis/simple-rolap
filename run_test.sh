@@ -2,7 +2,7 @@
 #
 # Run the rdbunit test files
 #
-# Copyright 2017 Diomidis Spinellis
+# Copyright 2017-2023 Diomidis Spinellis
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,24 +26,27 @@ db_out=$(mktemp /tmp/run-test-db_out.XXXXXX)
 rdbu_err=$(mktemp /tmp/run-test-rdbu_err.XXXXXX)
 
 UNIT=${UNIT:-*.rdbu}
+if [ "$V" = 3 ] ; then
+  RDBUNIT_FLAG=--results
+fi
 
 # Exit rdbunit each time to ensure it runs with a clean slate
 for i in $UNIT ; do
   case $RDBMS in
     mysql)
       need_var DBHOST
-      rdbunit --database=mysql $i 2>$rdbu_err |
+      rdbunit $RDBUNIT_FLAG --database=mysql $i 2>$rdbu_err |
 	mysql -h $DBHOST -u root -N >$db_out
       ;;
     postgresql)
       need_var DBHOST
       need_var DBUSER
       need_var MAINDB
-      rdbunit --database=postgresql $i 2>$rdbu_err |
+      rdbunit $RDBUNIT_FLAG --database=postgresql $i 2>$rdbu_err |
 	psql -h $DBHOST -U $DBUSER -t -q $MAINDB >$db_out
       ;;
     sqlite)
-      rdbunit --database=sqlite $i 2>$rdbu_err |
+      rdbunit $RDBUNIT_FLAG --database=sqlite $i 2>$rdbu_err |
 	sqlite3 >$db_out
       ;;
     *)
@@ -68,11 +71,19 @@ for i in $UNIT ; do
   # If we reach this point the database command finished without an error
   # Verify the file's contents
   grep -v '^$' $db_out
-  if egrep -v -e '^ *ok [0-9]' -e '^ *[0-9]+\.\.[0-9]+.?$' -e '^ *$' $db_out >/dev/null; then
+
+  if [ -n "$RDBUNIT_FLAG" ] ; then
+    # Skip check, because the output contains verbose data
+    continue
+  elif egrep -v -e '^ *ok [0-9]' -e '^ *[0-9]+\.\.[0-9]+.?$' -e '^ *$' $db_out >/dev/null; then
     echo "The test $i failed or produced extraneous output" 1>&2
     exit 4
   fi
 
 done
 
-echo 'All tests succeeded' 1>&2
+if [ -z "$RDBUNIT_FLAG" ] ; then
+  echo 'All tests succeeded.' 1>&2
+else
+  echo 'Verbose output is enabled; no summary produced.' 1>&2
+fi

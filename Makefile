@@ -100,7 +100,7 @@ graph.png: graph.dot	# Help: Create PNG chart with dependencies
 	dot -Tpng $< -o $@
 
 test:	# Help: Run RDBUnit tests
-# Help: Pass SCRIPT=script-name to execute only a single test script
+# Help: Pass UNIT=script-name to execute only a single test script
 	$(SRD)/run_test.sh
 
 tags: $(QUERIES)	# Help: Create tags file

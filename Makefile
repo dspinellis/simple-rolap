@@ -65,6 +65,7 @@ $(ROLAPDB):
 	touch $@
 	( cat $@ ; \
 	  echo .depend ; \
+	  echo .depend.all ; \
 	  echo reports ; \
 	  echo tables ; \
 	  echo simple-rolap ; \

@@ -107,15 +107,17 @@ Below is a table creation module.
 ```sql
 -- Projects that have been forked
 
-create table stratsel.forked_projects as
-  select distinct forked_from as id from projects
-  where forked_from is not null;
+CREATE TABLE stratsel.forked_projects AS
+  SELECT distinct forked_from AS id FROM projects
+  WHERE forked_from is not null;
 ```
 
 The SQL statement creates a table in the result database by using tables
 from the data and the result database.
 The module must reside in a file named after the table it creates,
 with the suffix `.sql`, e.g. `forked_projects.sql` in the preceding example.
+`SELECT` clauses must appear indented to avoid confusing the table
+creation module with a query module.
 
 By typing `make` the module will be run, if and only if its results have never
 been produced, or if they are older than the result tables on which they
@@ -128,22 +130,20 @@ statements that create indices, as shown in the following example.
 ```sql
 -- Projects in our candidate set that have their URL blacklisted
 
-create table leadership.blacklisted_projects ENGINE=MyISAM as
-  select projects.id
-  from leadership.blacklisted_urls
-  left join projects
-  on blacklisted_urls.url = projects.url;
+CREATE TABLE leadership.blacklisted_projects ENGINE=MyISAM AS
+  SELECT projects.id
+  FROM leadership.blacklisted_urls
+  LEFT join projects ON blacklisted_urls.url = projects.url;
 
-alter table leadership.blacklisted_projects add index(id);
+ALTER TABLE leadership.blacklisted_projects add index(id);
 ```
 
 A query module is a simple SQL `SELECT` query, such as the following.
 ```sql
 -- URLs of popular projects
-select projects.id, concat('https://github.com/', substr(url, 30)) as url
-from stratsel.popular_projects
-left join projects
-on projects.id = popular_projects.id;
+SELECT projects.id, Concat('https://github.com/', Substr(url, 30)) AS url
+FROM stratsel.popular_projects
+LEFT join projects ON projects.id = popular_projects.id;
 ```
 
 When *make* is run on such a module, the results of the query will

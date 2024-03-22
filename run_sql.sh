@@ -21,7 +21,7 @@
 # Add a drop table before a create table command
 add_drop_table()
 {
-  sed 's/^\(.*create  *table  *\([^ (]*\).*\)/drop table if exists \2; \1/i' "$1"
+  sed -E 's/^(.*create[[:space:]]+(virtual[[:space:]]+)?table[[:space:]]+([^ (]*).*)/drop table if exists \3; \1/i' "$1"
 }
 
 # Add any configuration statements from the .config.sql file

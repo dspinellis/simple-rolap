@@ -43,7 +43,7 @@ for i in *.sql ; do
   fi
 
   base=$(basename "$i" .sql)
-  if ! egrep -i '\<create[[:space:]]*table\>' "$i" >/dev/null ; then
+  if ! egrep -i '\<create[[:space:]]+(virtual[[:space:]]+)?table\>' "$i" >/dev/null ; then
     target="reports\\/$base.txt"
   else
     target="tables\\/$base"

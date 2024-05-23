@@ -2,7 +2,7 @@
 # Makefile to automate the relational online analytical processing of complex
 # queries
 #
-# Copyright 2017-2020 Diomidis Spinellis
+# Copyright 2017-2024 Diomidis Spinellis
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -127,3 +127,4 @@ $(V).SILENT:
 # Help: Pass V=2 to trace the underlying shell scripts
 # Help: Pass V=3 to see unit test output
 # Help: Pass TIME=time to time the queries
+# Help: Pass OMIT_QUERY_DEPS=1 to ignore dependencies on SQL queries

@@ -43,7 +43,6 @@ case $RDBMS in
   mysql)
     need_var DBUSER
     need_var DBHOST
-    need_var MAINDB
     {
       echo -n 'set autocommit=0; '
       add_config
@@ -55,7 +54,6 @@ case $RDBMS in
   postgresql)
     need_var DBUSER
     need_var DBHOST
-    need_var MAINDB
     {
       echo -n "SET client_min_messages='ERROR';"
       echo -n 'begin; '

@@ -91,7 +91,7 @@ graph.dot: .depend	# Help: Create GraphViz file with ROLAP dependencies
 full-graph.dot: .depend.all	# Help: Create GraphViz file with all dependencies
 	$(SRD)/dep2dot.sed $< >$@
 
-sorted-dependencies: .depend	# Help: Create text file with ROLAP dependencies
+ordered-dependencies: .depend	# Help: Create text file with ROLAP dependencies
 	$(SRD)/dep2tsort.sed $< | tsort >$@
 
 graph.pdf: graph.dot	# Help: Create PDF chart with dependencies

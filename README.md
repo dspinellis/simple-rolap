@@ -186,7 +186,7 @@ to match those of the committed files.  In collaborative development settings
 this will avoid rerunning queries that have already been executed by others.
 * Run `make tags` to create a `tags` file that many editors can use
 to automatically navigate between the queries.
-* Run `make sorted-dependencies` to create a file named `sorted-dependencies`
+* Run `make ordered-dependencies` to create a file named `ordered-dependencies`
 with the queries listed in the order determined by their dependencies.
 * Run `make V=1` to see the commands executed within the Makefile.
 * Run `make V=1 TIME=time` to see timing information of executions.

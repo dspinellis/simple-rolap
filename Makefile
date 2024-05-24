@@ -42,6 +42,8 @@ RESULTS=$(shell grep -li '^select' *.sql | sed 's/\(.*\)\.sql/reports\/\1.txt/')
 
 .SUFFIXES:.sql .txt .pdf
 
+.PHONY: all clean help sync-timestamps test
+
 reports/%.txt: %.sql $(ROLAPDB) $(DEPENDENCIES)
 	@echo "[Create report from $<]"
 	mkdir -p reports
@@ -73,8 +75,6 @@ $(ROLAPDB):
 	) | \
 	sort -u >$@.new
 	mv $@.new $@
-
-.PHONY: corrtest
 
 .depend .depend.all: $(ROLAPDB) $(wildcard *.sql)
 	@echo "[Create/update dependencies]"

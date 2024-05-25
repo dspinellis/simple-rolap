@@ -54,6 +54,15 @@ tables/%: %.sql $(ROLAPDB) $(DEPENDENCIES)
 	mkdir -p tables
 	$(TIME) $(SRD)/run_sql.sh $< >$@
 
+%.pdf: %.dot
+	dot -Tpdf $< -o $@
+
+%.svg: %.dot
+	dot -Tsvg $< -o $@
+
+%.png: %.dot
+	dot -Tpng $< -o $@
+
 all: .depend .gitignore $(TABLES_VIEWS) $(RESULTS) $(ALL) # Help: Run all queries and reports
 	@echo '[All tables and reports are up to date]'
 
@@ -94,14 +103,13 @@ full-graph.dot: .depend.all	# Help: Create GraphViz file with all dependencies
 ordered-dependencies: .depend	# Help: Create text file with ROLAP dependencies
 	$(SRD)/dep2tsort.sed $< | tsort >$@
 
-graph.pdf: graph.dot	# Help: Create PDF chart with dependencies
-	dot -Tpdf $< -o $@
+graph.pdf: graph.dot	# Help: Create PDF chart with dependencies (also svg, png)
 
-graph.svg: graph.dot	# Help: Create SVG chart with dependencies
-	dot -Tsvg $< -o $@
+graph.svg: graph.dot
 
-graph.png: graph.dot	# Help: Create PNG chart with dependencies
-	dot -Tpng $< -o $@
+graph.png: graph.dot
+
+full-graph.pdf: full-graph.dot	# Help: Create PDF chart with all dependencies (also svg, png)
 
 test:	# Help: Run RDBUnit tests
 # Help: Pass UNIT=script-name to execute only a single test script

@@ -40,7 +40,7 @@ QUERIES=$(wildcard *.sql)
 TABLES_VIEWS=$(shell sed -En 's/create[[:space:]]+(virtual[[:space:]])?(table|or[[:space:]]+replace[[:space:]]+view)[[:space:]]+$(ROLAPDB)\.([^[:space:]]*).*/tables\/\3/pi' *.sql)
 RESULTS=$(shell grep -li '^select' *.sql | sed 's/\(.*\)\.sql/reports\/\1.txt/')
 
-.SUFFIXES:.sql .txt .pdf
+.SUFFIXES:.sql .txt .pdf .svg
 
 .PHONY: all clean help sync-timestamps test
 
@@ -96,6 +96,9 @@ ordered-dependencies: .depend	# Help: Create text file with ROLAP dependencies
 
 graph.pdf: graph.dot	# Help: Create PDF chart with dependencies
 	dot -Tpdf $< -o $@
+
+graph.svg: graph.dot	# Help: Create SVG chart with dependencies
+	dot -Tsvg $< -o $@
 
 graph.png: graph.dot	# Help: Create PNG chart with dependencies
 	dot -Tpng $< -o $@

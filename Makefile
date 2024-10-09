@@ -137,5 +137,6 @@ $(V).SILENT:
 
 # Help: Pass V=2 to trace the underlying shell scripts
 # Help: Pass V=3 to see unit test output
+# Help: Pass V=4 to see the generated SQL
 # Help: Pass TIME=time to time the queries
 # Help: Pass OMIT_QUERY_DEPS=1 to ignore dependencies on SQL queries

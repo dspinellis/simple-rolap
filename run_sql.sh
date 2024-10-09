@@ -3,7 +3,7 @@
 # Run the specified SQL file with autocommit disabled
 # If the SQL creates a table ensure it is removed
 #
-# Copyright 2017 Diomidis Spinellis
+# Copyright 2017-2024 Diomidis Spinellis
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,6 +32,17 @@ add_config()
   fi
 }
 
+# With V=4 echo the passed input to stderr
+trace_sql()
+{
+  if [ "$V" = 4 ] ;
+  then
+    tee /dev/stderr
+  else
+    cat
+  fi
+}
+
 . $ROLAP_DIR/need_var.sh
 
 need_var RDBMS
@@ -49,6 +60,7 @@ case $RDBMS in
       add_drop_table "$1"
       echo "commit;"
     } |
+    trace_sql |
     mysql -h $DBHOST --quick --local-infile -u "$DBUSER" $MAINDB
     ;;
   postgresql)
@@ -61,6 +73,7 @@ case $RDBMS in
       add_drop_table "$1"
       echo "commit;"
     } |
+    trace_sql |
     psql -q -t -F "$TAB" -P footer -A -v 'ON_ERROR_STOP=1' -h $DBHOST -U $DBUSER $MAINDB
     ;;
   sqlite)
@@ -70,6 +83,7 @@ case $RDBMS in
       add_config
       add_drop_table "$1"
     } |
+    trace_sql |
     sqlite3 $MAINDB.db
     ;;
   *)

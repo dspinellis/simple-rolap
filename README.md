@@ -191,6 +191,8 @@ with the queries listed in the order determined by their dependencies.
 * Run `make V=1` to see the commands executed within the Makefile.
 * Run `make V=1 TIME=time` to see timing information of executions.
 * Run `make V=2` to also see the commands executed within the shell scripts.
+* Run `make V=3` to see unit test output.
+* Run `make V=4` to see the generated SQL code.
 * Run `make OMIT_QUERY_DEPS=true` to omit dependencies on the query's source
   code from the generated dependencies.
 * Put SQL statements that you want to precede each query (e.g. *MySQL*

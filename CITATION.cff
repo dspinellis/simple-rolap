@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+title: simple-rolap
+message: >-
+  If you use this software, please cite, using the metadata from this file,
+  both the article from preferred-citation and the software itself.
+preferred-citation:
+  date-released: "2024-09-01"
+  doi: "10.1109/MS.2024.3409988"
+  title: "Modular Data Analytics"
+  authors:
+    - family-names: "Spinellis"
+      given-names: "Diomidis"
+  type: "article"
+  volume: 41
+  issue: 5
+  journal: "IEEE Software"
+  start: 20
+  end: 23
+type: software
+authors:
+  - given-names: Diomidis
+    family-names: Spinellis
+    email: dds@aueb.gr
+    affiliation: Athens University of Economics and Business
+    orcid: 'https://orcid.org/0000-0003-4231-1897'
+repository-code: 'https://github.com/dspinellis/simple-rolap'
+keywords:
+  - SQL
+  - ROLAP
+  - make
+  - Unix
+  - Shell
+license: Apache-2.0

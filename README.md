@@ -38,7 +38,13 @@ for mining Git repositories in a
 [technical briefing](https://doi.org/10.5281/zenodo.7513793)
 presented at the 2017 International Conference on Software Engineering.
 
-You can cite this work as follows.
+You can find *simple-rolap* introduced in the following article,
+which you can cite as its definitive description.
+
+Diomidis Spinellis. Modular data analytics. *IEEE Software*, 41(5):20–23, September 2024. [doi:10.1109/MS.2024.3409988](https://dx.doi.org/10.1109/MS.2024.3409988)
+
+In addition, if you use _simple-rolap_ for mining software repositories,
+consider reading and citing the following.
 
 Georgios Gousios and Diomidis Spinellis. Mining software engineering data from GitHub. In *Proceedings of the 39th International Conference on Software Engineering Companion, ICSE-C '17*, pages 501–502, Piscataway, NJ, USA, May 2017. IEEE Press. Technical Briefing. [doi:10.1109/ICSE-C.2017.164](https://dx.doi.org/10.1109%2FICSE-C.2017.164)
 

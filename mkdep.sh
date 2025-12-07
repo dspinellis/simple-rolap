@@ -8,7 +8,7 @@
 # 2. set the timestamp of table-tracking files to the corresponding
 #    table's creation time.
 #
-# Copyright 2017-2024 Diomidis Spinellis
+# Copyright 2017-2025 Diomidis Spinellis
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,12 +45,12 @@ for i in *.sql ; do
   # Output target's dependency on query source code and set target for
   # sed(1) substitution.
   base=$(basename "$i" .sql)
-  if ! egrep -i '\<create[[:space:]]+(virtual[[:space:]]+)?table\>' "$i" >/dev/null ; then
+  if egrep -i '\<create[[:space:]]+(virtual[[:space:]]+)?table\>' "$i" >/dev/null ; then
+    test -n "$OMIT_QUERY_DEPS" || echo "tables/$base: $i"
+    target="tables\\/$base"
+  else
     test -n "$OMIT_QUERY_DEPS" || echo "reports/$base.txt: $i"
     target="reports\\/$base.txt"
-  else
-    test -n "$OMIT_QUERY_DEPS" || echo "reports/$base: $i"
-    target="tables\\/$base"
 
     # Freshen target file's date if the table already exists
     if [ -z "$SKIP_TIMESTAMPING" ] ; then

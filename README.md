@@ -179,9 +179,13 @@ popular.svg: reports/popular.dot
 Here are some more things that the provided `Makefile` allows you to do.
 
 * Run `make help` to obtain a list of available targets.
-* Run `make graph.png` or `make graph.pdf` to generate a diagram of the
-ROLAP queries' dependencies.
+* Run `make graph.svg`, `make graph.png`, or `make graph.pdf`
+  to generate a diagram of the ROLAP queries' dependencies.
   Use `full-graph` rather than `graph` to include the main database tables.
+* Run `make schema.svg`, `make schema.png`, or `make schema.pdf`
+  to generate a diagram of the ROLAP SQLite3 database.
+  This requires the tables to be created with one field per line
+  and the opening and closing brackets in separate lines.
 * Run `make test` to run any [RDBUnit](https://github.com/dspinellis/rdbunit)
 unit tests you may have written. Pass `UNIT=`*unit-name* to execute
 only the specified unit test.

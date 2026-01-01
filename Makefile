@@ -2,7 +2,7 @@
 # Makefile to automate the relational online analytical processing of complex
 # queries
 #
-# Copyright 2017-2024 Diomidis Spinellis
+# Copyright 2017-2026 Diomidis Spinellis
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -93,6 +93,15 @@ clean:	# Help: Drop database and remove generated files
 	@echo '[Remove tables, reports; drop database $(ROLAPDB)]'
 	rm -rf reports tables .depend $(ROLAPDB)
 	$(SRD)/drop_db.sh
+
+schema.dot: $(TABLES_VIEWS) # Help: Create GraphViz file with ROLAP schema
+	$(SRD)/schema-graph.sh >$@
+
+schema.pdf: schema.dot	# Help: Create PDF chart with schema (also svg, png)
+
+schema.svg: schema.dot
+
+schema.png: schema.dot
 
 graph.dot: .depend	# Help: Create GraphViz file with ROLAP dependencies
 	$(SRD)/dep2dot.sed $< >$@

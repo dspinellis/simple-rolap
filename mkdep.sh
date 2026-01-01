@@ -5,10 +5,10 @@
 # As a side effect:
 # 1. Ensure that table names are specified on the same line as FROM and
 #    JOIN
-# 2. set the timestamp of table-tracking files to the corresponding
+# 2. Set the timestamp of table-tracking files to the corresponding
 #    table's creation time.
 #
-# Copyright 2017-2025 Diomidis Spinellis
+# Copyright 2017-2026 Diomidis Spinellis
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,8 +36,8 @@ fi
 for i in *.sql ; do
 
   # Issue error if dependencies can't be tracked
-  if egrep -iHn '^.*\<(from|join)[[:space:]]*$' "$i" 1>&2 ; then
-    echo 'No table specified after FROM or JOIN in the above statement(s)' 1>&2
+  if egrep -iHn '^.*\<(from|join|references)[[:space:]]*$' "$i" 1>&2 ; then
+    echo 'No table specified after FROM, JOIN, or REFERENCES in the above statement(s)' 1>&2
     echo 'Dependencies cannot be correctly tracked' 1>&2
     exit 1
   fi
@@ -76,6 +76,8 @@ for i in *.sql ; do
   # Output dependencies
   # Dependency patterns to search and replace
   SEARCH_ROLAPDB="^(.*)\<(from|join)[[:space:]]*$ROLAPDB\.([a-zA-Z][-_a-zA-Z0-9]*)(.*)"
+  # Assume FKs reference the ROLAPDB.
+  SEARCH_SAMEDB="^(.*)\<(references)[[:space:]]*([a-zA-Z][-_a-zA-Z0-9]*)(.*)"
   SEARCH_MAINDB="^(.*)\<(from|join)[[:space:]]*([a-zA-Z][-_a-zA-Z0-9]*)(.*)"
   sed -rn "
 # Ignore delete queries
@@ -95,6 +97,19 @@ s/--.*//
   s/$SEARCH_ROLAPDB/\1 \4/I
   b retry_rolap	# Try for another dependency
 }
+
+:retry_same
+/$SEARCH_SAMEDB/I {
+  h		# Save pattern in hold space
+  # Create dependency
+  s/$SEARCH_SAMEDB/$target: tables\/\3/I
+  p		# Print dependency
+  g		# Get back pattern space
+  # Remove dependency
+  s/$SEARCH_SAMEDB/\1 \4/I
+  b retry_same  # Try for another dependency
+}
+
 :retry_main
 /$SEARCH_MAINDB/I {
   h		# Save pattern in hold space

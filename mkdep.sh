@@ -33,11 +33,19 @@ if ! [ -r $ROLAPDB ] ; then
   exit
 fi
 
+# To avoid false positives, remove comments and SQLite/PostgreSQL client
+# meta-commands.
+clean_sql()
+{
+  sed 's/--.*//;/^[.\\]/d'
+}
+
 for i in *.sql ; do
 
-  # Issue error if dependencies can't be tracked
-  if egrep -iHn '^.*\<(from|join|references)[[:space:]]*$' "$i" 1>&2 ; then
-    echo 'No table specified after FROM, JOIN, or REFERENCES in the above statement(s)' 1>&2
+  # Issue error if dependencies can't be tracked.
+  if clean_sql <"$i" |
+    egrep -in '^.*\<(from|join|references)[[:space:]]*$' 1>&2 ; then
+    echo "$i: No table specified after FROM, JOIN, or REFERENCES in the above statement(s)" 1>&2
     echo 'Dependencies cannot be correctly tracked' 1>&2
     exit 1
   fi
@@ -45,7 +53,8 @@ for i in *.sql ; do
   # Output target's dependency on query source code and set target for
   # sed(1) substitution.
   base=$(basename "$i" .sql)
-  if egrep -i '\<create[[:space:]]+(virtual[[:space:]]+)?table\>' "$i" >/dev/null ; then
+  if clean_sql <"$i" |
+    egrep -i '\<create[[:space:]]+(virtual[[:space:]]+)?table\>' >/dev/null ; then
     test -n "$OMIT_QUERY_DEPS" || echo "tables/$base: $i"
     target="tables\\/$base"
   else
@@ -85,6 +94,9 @@ for i in *.sql ; do
 
 # Remove line comments
 s/--.*//
+
+# Remove SQLite and PostreSQL client commands
+/^[.\\]/d
 
 :retry_rolap
 /$SEARCH_ROLAPDB/I {

@@ -2,7 +2,7 @@
 #
 # Run the rdbunit test files
 #
-# Copyright 2017-2023 Diomidis Spinellis
+# Copyright 2017-2026 Diomidis Spinellis
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,12 +30,24 @@ if [ "$V" = 3 ] ; then
   RDBUNIT_FLAG=--results
 fi
 
+# With V=4 echo the passed input to stderr
+trace_sql()
+{
+  if [ "$V" = 4 ] ;
+  then
+    tee /dev/stderr
+  else
+    cat
+  fi
+}
+
 # Exit rdbunit each time to ensure it runs with a clean slate
 for i in $UNIT ; do
   case $RDBMS in
     mysql)
       need_var DBHOST
       rdbunit $RDBUNIT_FLAG --database=mysql $i 2>$rdbu_err |
+        trace_sql |
 	mysql -h $DBHOST -u root -N >$db_out
       ;;
     postgresql)
@@ -43,10 +55,12 @@ for i in $UNIT ; do
       need_var DBUSER
       need_var MAINDB
       rdbunit $RDBUNIT_FLAG --database=postgresql $i 2>$rdbu_err |
+        trace_sql |
 	psql -h $DBHOST -U $DBUSER -t -q $MAINDB >$db_out
       ;;
     sqlite)
       rdbunit $RDBUNIT_FLAG --database=sqlite $i 2>$rdbu_err |
+        trace_sql |
 	sqlite3 >$db_out
       ;;
     *)
